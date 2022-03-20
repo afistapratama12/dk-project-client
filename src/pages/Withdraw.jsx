@@ -165,7 +165,7 @@ function Withdraw() {
             }
             </Box>
 
-            {wdReqHistory && <TableWithdraw wdReqHistory={wdReqHistory}/>} 
+            <TableWithdraw wdReqHistory={wdReqHistory}/>
         </Box>
     )
 }

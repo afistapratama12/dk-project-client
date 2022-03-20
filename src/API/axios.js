@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const url = process.env.SERVICE_URL
+//TODO: get env file SERVICE_URL
 
 export const Axios = axios.create({
-    baseURL: url
+    baseURL: "https://dk-project-api.onrender.com"
 })
 
 
