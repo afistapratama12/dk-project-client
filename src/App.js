@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
 
