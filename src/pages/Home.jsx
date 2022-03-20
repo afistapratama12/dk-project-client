@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { axiosGet } from "../API/axios";
 
 import { Box, Text } from "@chakra-ui/layout"
-import { Spinner } from "@chakra-ui/spinner";
 
 import { NavigationBar } from "../components/Navbar.jsx"
 import { HomeDownline } from "../components/HomeDownline";
+import { Loading } from "../components/Loading";
 
 
 function Home() {
@@ -85,16 +85,11 @@ function Home() {
         }
     }
 
-    console.log(userDetail)
-
-    if (isLoading) return (
-        <Box>
-            <Spinner/>
-        </Box>
-    )
-
     return (
         <>
+
+        { isLoading && <Loading/>}
+
         <NavigationBar/>
 
         <Box>

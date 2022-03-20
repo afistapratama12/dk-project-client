@@ -4,11 +4,14 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 ReactDOM.render(
   <StrictMode>
     <ColorModeScript />
+    <StyledEngineProvider injectFirst>
     <App />
+    </StyledEngineProvider>
   </StrictMode>,
   document.getElementById('root')
 );

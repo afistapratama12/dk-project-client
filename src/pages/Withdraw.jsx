@@ -1,6 +1,7 @@
 import { Box, Button, Flex, FormLabel, Heading, Input, Radio, RadioGroup, Stack, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { axiosGet } from "../API/axios"
+import { Loading } from "../components/Loading"
 import { NavigationBar } from "../components/Navbar.jsx"
 import { formatMoney } from "../helper/helper"
 
@@ -53,9 +54,10 @@ export function TableWithdraw({ wdReqHistory }) {
     )
 }
 
-
 function Withdraw() {
     const auth = localStorage.getItem("access_token")
+
+    const [loading, setLoading] = useState(false)
 
     const [userDetail, setUserDetail] = useState();
     const [bankInfo, setBankInfo ] = useState()
@@ -67,6 +69,8 @@ function Withdraw() {
 
 
     const getBankAccInfo = async () => {
+        setLoading(true)
+
         try {
             const respUser = await axiosGet(auth, `/v1/users/self`)
 
@@ -83,19 +87,19 @@ function Withdraw() {
 
         } catch (err) {
             console.log(err.response)
+        } finally {
+            setLoading(false)
         }
     }
-
-    
-    console.log(openWdForm)
-    console.log(wdReqHistory)
-
 
     useEffect(() => {
         getBankAccInfo()
     },[])
 
     return (
+        <>
+        { loading && <Loading/> }
+
         <Box 
             maxW={'7xl'} 
             alignItems={'center'}
@@ -167,6 +171,7 @@ function Withdraw() {
 
             <TableWithdraw wdReqHistory={wdReqHistory}/>
         </Box>
+        </>
     )
 }
 

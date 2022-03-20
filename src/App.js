@@ -11,12 +11,13 @@ import {
 
 import { Login } from "./pages/Login"
 import { path } from "./routes/route"
-import { PrivateRoute } from "./routes/PrivateRoute";
 import { OnlyPublicRoute } from "./routes/OnlyPublicRoute";
 import { Home } from './pages/Home';
 import { OnlyAdminRoute } from './routes/OnlyAdminRoute';
-import { AdminView } from './pages/AdminView';
+import { AdminWithdraw } from './pages/AdminWithdraw';
 import { Withdraw } from './pages/Withdraw';
+import { OnlyUserRoute } from './routes/OnlyUserRoute';
+import { SendBalance } from './pages/SendBalance';
 
 function App() {
   return (
@@ -24,9 +25,10 @@ function App() {
       <Router>
           <Switch>
             <OnlyPublicRoute exact path={path.login} component={Login}/>
-            <PrivateRoute  exact path={path.root} component={Home}/>
-            <PrivateRoute  exact path={path.withdraw} component={Withdraw}/>
-            <OnlyAdminRoute  exact path={path.admin} component={AdminView}/>
+            <OnlyUserRoute  exact path={path.root} component={Home}/>
+            <OnlyUserRoute  exact path={path.withdraw} component={Withdraw}/>
+            <OnlyAdminRoute  exact path={path.admin} component={AdminWithdraw}/>
+            <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
           </Switch>
       </Router>
 
