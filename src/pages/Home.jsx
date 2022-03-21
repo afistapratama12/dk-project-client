@@ -96,13 +96,13 @@ function Home() {
             <Text fontWeight={'bold'}>Halo, {userDetail?.fullname}</Text>
         </Box>        
 
-        { userDetail && <HomeDownline 
+        <HomeDownline 
             userDetail={baseId === userId ? userDetail : userShow} 
             downline={{left: dlLeft, center: dlCenter, right: dlRight}}
             showMore={{left: showLeft, center: showCenter, right: showRight}}
             isLoading={isLoading}
-            />
-        }
+        />
+        
         </>
     )
 }

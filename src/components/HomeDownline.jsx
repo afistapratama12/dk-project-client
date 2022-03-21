@@ -78,7 +78,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             <Box
                 align={'center'}
             >
-                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data.fullname}</Text>
+                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data?.fullname}</Text>
                 <Text fontWeight={'bold'}>{data?.role === "admin" ? "Tengah" : positionInd(position)}</Text>
             </Box>
 
@@ -164,7 +164,6 @@ export function Card({ data, statusCard, position, parentId, loading }) {
       </Modal>
         </>
     )
-
 }
 
 
@@ -210,7 +209,6 @@ function HomeDownline(props) {
         <>
         <Box 
             maxW={'7xl'}
-            align={'center'}
             backgroundColor="gray.50"
         >
             <Box>
@@ -218,7 +216,7 @@ function HomeDownline(props) {
             </Box>
 
             <Box
-                bg='pink'
+                align={'center'}
                 p={2}
             >
                 <Text fontWeight={'bold'}>Jaringan Anda</Text>
@@ -240,33 +238,33 @@ function HomeDownline(props) {
                     }
                 </Box>
 
-                <Card data={user} position={user.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading}/>
+                <Card data={user} position={user?.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading}/>
                 <Flex
                     mt={6}
                     justifyContent={'space-around'}
                 >
                     <Box>
-                        <Card data={downline.left} position={"left"} statusCard={downline.left === null ? 'empty' : 'member'} parentId={user.id} loading={isLoading}/>
+                        <Card data={downline?.left} position={"left"} statusCard={downline.left === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
                         <Box
                             mt={4}    
                         >
-                            { showMore.left && <Button onClick={e => handleSeeDownline(e, downline.left)}>Lihat Downline</Button> }
+                            { showMore?.left && <Button onClick={e => handleSeeDownline(e, downline.left)}>Lihat Downline</Button> }
                         </Box>
                     </Box>
                     <Box>
-                        <Card data={downline.center} position={'center'} statusCard={downline.center === null ? 'empty' : 'member'} parentId={user.id} loading={isLoading}/>
+                        <Card data={downline?.center} position={'center'} statusCard={downline.center === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
                         <Box
                             mt={4}    
                         >
-                            { showMore.center && <Button onClick={e => handleSeeDownline(e, downline.center)}>Lihat Downline</Button> }
+                            { showMore?.center && <Button onClick={e => handleSeeDownline(e, downline.center)}>Lihat Downline</Button> }
                         </Box>
                     </Box>
                     <Box>
-                        <Card data={downline.right} position={'right'} statusCard={downline.right === null ? 'empty' : 'member'} parentId={user.id} loading={isLoading}/>
+                        <Card data={downline?.right} position={'right'} statusCard={downline?.right === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
                         <Box
                             mt={4}    
                         >
-                            { showMore.right && <Button onClick={e => handleSeeDownline(e, downline.right)}>Lihat Downline</Button> }
+                            { showMore?.right && <Button onClick={e => handleSeeDownline(e, downline?.right)}>Lihat Downline</Button> }
                         </Box>
                     </Box>
                 </Flex>

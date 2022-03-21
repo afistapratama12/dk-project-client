@@ -141,6 +141,11 @@ function AdminWithdraw() {
                             <Td>
                                 <Button 
                                     width={20}
+                                    bg={wd.approved ? "red.500" : "blue.400"}
+                                    _hover={{
+                                        bg: wd.approved ? "red.300" : "blue.300"
+                                    }}
+                                    color="white"
                                     onClick={e => postApprove(e, wd.id, wd.approved)}
                                 >{wd.approved ? "Batal" : "Terima"}</Button>
                             </Td>
@@ -158,7 +163,12 @@ function AdminWithdraw() {
                         <Td>
                             <Button 
                                 width={20}
+                                bg={wd.approved ? "red.500" : "blue.400"}
+                                _hover={{
+                                    bg: wd.approved ? "red.300" : "blue.300"
+                                }}
                                 onClick={e => postApprove(e, wd.id, wd.approved)}
+                                color="white"
                             >{wd.approved ? "Batal" : "Terima"}</Button>
                         </Td>
                     </Tr>

@@ -30,19 +30,19 @@ function PartCardHead({ data, isLoading }) {
                         justifyContent={'space-between'}
                     >
                         <Text>Uang</Text>
-                        <Text>{formatMoney(data.money_balance)}</Text>
+                        <Text>{formatMoney(data?.money_balance)}</Text>
                     </Flex>
                     <Flex
                         justifyContent={'space-between'}
                     >
                         <Text>Saldo SAS</Text>
-                        <Text>{formatMoney(data.sas_balance)}</Text>
+                        <Text>{formatMoney(data?.sas_balance)}</Text>
                     </Flex>
                     <Flex
                         justifyContent={'space-between'}
                     >
                         <Text>Saldo RO</Text>
-                        <Text>{formatMoney(data.ro_balance)}</Text>
+                        <Text>{formatMoney(data?.ro_balance)}</Text>
                     </Flex>
                 </Box>
                 <Box
@@ -74,37 +74,37 @@ function PartCardHead({ data, isLoading }) {
                 justifyContent={'space-between'}
             >
                 <Text>Nama Lengkap : </Text>
-                <Text>{data.fullname}</Text>
+                <Text>{data?.fullname}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Nomer Telp / WA : </Text>
-                <Text>{data.phone_number}</Text>
+                <Text>{data?.phone_number}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Username :</Text>
-                <Text>{data.username}</Text>
+                <Text>{data?.username}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Saldo Keuangan :</Text>
-                <Text>{data.money_balance}</Text>
+                <Text>{data?.money_balance}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Saldo SAS :</Text>
-                <Text>{data.sas_balance}</Text>
+                <Text>{data?.sas_balance}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Saldo Repeat Order :</Text>
-                <Text>{data.ro_balance}</Text>
+                <Text>{data?.ro_balance}</Text>
             </Flex>
 
           </Box>

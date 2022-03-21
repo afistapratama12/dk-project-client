@@ -48,9 +48,6 @@ function SendBalance() {
                 </Flex>
             </Box>
         ))}
-
-
-
         </>
     )
 }
