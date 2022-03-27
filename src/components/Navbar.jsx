@@ -46,76 +46,82 @@ export function NavigationBar() {
   };
 
   return (
-    <Box maxW={'7xl'}>
-      <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
-        align={'center'}
-      >
+    <Box
+      bg={useColorModeValue('#E89F71', 'gray.800')}
+      color={useColorModeValue('gray.600', 'white')}
+    >
+      <Box 
+        maxW={'7xl'}
+        margin='auto'
+        >
         <Flex
-          flex={{ base: 1, md: 'auto' }}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}
+          minH={'60px'}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
+          borderBottom={1}
+          borderStyle={'solid'}
+          borderColor={useColorModeValue('gray.200', 'gray.900')}
+          align={'center'}
         >
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-           
-          <Link
-            as={ReactLink}
-            to="/"
+          <Flex
+            flex={{ base: 1, md: 'auto' }}
+            ml={{ base: -2 }}
+            display={{ base: 'flex', md: 'none' }}
           >
-            <Image
-                alt="logonav"
-                src='https://ik.imagekit.io/po7ijtlbpcza/dk_logo_mini__1__eXntirBRg.png?ik-sdk-version=javascript-1.4.3&updatedAt=1647778825095'
-                objectFit="cover"
-                maxW={'50px'}
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+              }
+              variant={'ghost'}
+              aria-label={'Toggle Navigation'}
             />
-          </Link> 
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav role={role}/>
           </Flex>
-        </Flex>
+          <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+            
+            <Link
+              as={ReactLink}
+              to="/"
+            >
+              <Image
+                  alt="logonav"
+                  src='https://ik.imagekit.io/po7ijtlbpcza/dk_logo_mini__1__eXntirBRg.png?ik-sdk-version=javascript-1.4.3&updatedAt=1647778825095'
+                  objectFit="cover"
+                  maxW={'50px'}
+              />
+            </Link> 
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}
-        >
-          <Button
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            _hover={{
-              bg: 'pink.300',
-            }}
-            onClick={handleLogout}
-            cursor="pointer"
+            <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+              <DesktopNav role={role}/>
+            </Flex>
+          </Flex>
+
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={'flex-end'}
+            direction={'row'}
+            spacing={6}
           >
-            {isLoading ? <Spinner /> : 'Keluar'}
-          </Button>
-        </Stack>
-      </Flex>
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav role={role}/>
-      </Collapse>
+            <Button
+              as={'a'}
+              fontSize={'sm'}
+              fontWeight={600}
+              color={'white'}
+              bg={'#AA4A30'}
+              _hover={{
+                bg: 'yellow.500',
+              }}
+              onClick={handleLogout}
+              cursor="pointer"
+            >
+              {isLoading ? <Spinner /> : 'Keluar'}
+            </Button>
+          </Stack>
+        </Flex>
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav role={role}/>
+        </Collapse>
+      </Box>
     </Box>
   );
 }
@@ -135,7 +141,8 @@ const DesktopNav = ({role}) => {
                 as={ReactLink}
                 to={navItem.href ?? '#'}
                 fontSize={'md'}
-                color={linkColor}
+                fontWeight={'bold'}
+                color={'gray.800'}
                 _hover={{
                   textDecoration: 'none',
                   color: linkHoverColor,
@@ -247,7 +254,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
 const MobileNav = ({ role }) => {
   return (
     <Stack
-      bg={useColorModeValue('white', 'gray.800')}
+      bg={useColorModeValue('#E89F71', 'gray.800')}
       p={4}
       display={{ md: 'none' }}
     >
@@ -280,7 +287,7 @@ const MobileNavItem = ({ label, children, href }) => {
       >
         <Text
           fontWeight={600}
-          color={useColorModeValue('gray.600', 'gray.200')}
+          color={'gray.800'}
         >
           {label}
         </Text>

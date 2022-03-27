@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { axiosGet } from "../API/axios";
+import { useHistory } from "react-router-dom";
 
-import { Box, Text } from "@chakra-ui/layout"
+import { Box, Text, Flex } from "@chakra-ui/layout"
 
 import { NavigationBar } from "../components/Navbar.jsx"
 import { HomeDownline } from "../components/HomeDownline";
 import { Loading } from "../components/Loading";
+import { Button } from "@chakra-ui/react";
+import { buttonResponsive, textResponsive } from "../theme/font";
 
 
 function Home() {
     const auth = localStorage.getItem("access_token")
+
+    const history = useHistory()
 
     const baseId = localStorage.getItem("base_id")
     const userId = localStorage.getItem("id")
@@ -44,6 +49,12 @@ function Home() {
     const [showRight, setShowRight] = useState(false)
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const toWd = (e) => {
+        e.preventDefault()
+
+        history.push("/withdraw")
+    }
 
     useEffect(() => {
         getUserDetailAndDownline()
@@ -87,22 +98,49 @@ function Home() {
 
     return (
         <>
-
-        { isLoading && <Loading/>}
-
         <NavigationBar/>
+        <Box
+            height="100vh"
+            maxW={'7xl'}
+            margin="auto"
+        >
+            { isLoading && <Loading/>}
 
-        <Box>
-            <Text fontWeight={'bold'}>Halo, {userDetail?.fullname}</Text>
-        </Box>        
 
-        <HomeDownline 
-            userDetail={baseId === userId ? userDetail : userShow} 
-            downline={{left: dlLeft, center: dlCenter, right: dlRight}}
-            showMore={{left: showLeft, center: showCenter, right: showRight}}
-            isLoading={isLoading}
-        />
-        
+            <Flex justifyContent={'space-between'}>
+                <Box
+                    px={4}
+                    py={6}
+                >
+                    <Text 
+                        fontWeight={'bold'}
+                        fontSize={textResponsive}    
+                    >Halo, {userDetail?.fullname}</Text>
+                </Box>
+                <Box
+                    px={4}
+                    py={4}
+                >
+                    <Button
+                        onClick={toWd}
+                        bg={'#AA4A30'}
+                        color={'white'}
+                        fontSize={buttonResponsive}
+                        _hover={{
+                            bg: `#c25d42`
+                        }}
+                    >Ajukan Penarikan</Button>        
+                </Box>
+
+            </Flex>
+
+            <HomeDownline 
+                userDetail={baseId === userId ? userDetail : userShow} 
+                downline={{left: dlLeft, center: dlCenter, right: dlRight}}
+                showMore={{left: showLeft, center: showCenter, right: showRight}}
+                isLoading={isLoading}
+            />
+        </Box>
         </>
     )
 }

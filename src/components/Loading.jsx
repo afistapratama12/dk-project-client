@@ -1,7 +1,5 @@
 import { Box, Spinner } from "@chakra-ui/react"
 
-
-
 function Loading() {
     return (
         <Box
@@ -9,7 +7,7 @@ function Loading() {
             position: "absolute",
             top: 0,
             width: "100vw",
-            height: "100vh",
+            height: "100%",
             zIndex: "10",
             backgroundColor: "rgb(0,0,0,0.2"
         }}
@@ -19,6 +17,7 @@ function Loading() {
             right="calc(50% - (58px / 2))"
             position="fixed"
             display={'block'}
+            emptyColor='gray.200'
             zIndex="11"
         />
     </Box>

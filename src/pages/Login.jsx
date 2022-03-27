@@ -22,6 +22,7 @@ import { Axios } from "../API/axios";
 
 import { useState } from "react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
+import swal from "sweetalert";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -98,6 +99,16 @@ function Login() {
         }
     }
 
+    const handleForgot= (e) => {
+      e.preventDefault()
+
+      swal({          
+        title: "Lupa akun!",
+        text: `Mohon hubungi admin untuk mendapatkan informasi login`,
+        icon: "warning",
+      })
+    }
+
     return (
     <>
     <Flex
@@ -167,7 +178,7 @@ function Login() {
                   </InputRightElement>
                 </InputGroup>
                 <FormHelperText textAlign="right">
-                  <Link>forgot password?</Link>
+                  <Link onClick={handleForgot}>lupa akun?</Link>
                 </FormHelperText>
               </FormControl>
               <Button

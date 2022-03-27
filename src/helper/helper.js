@@ -26,3 +26,39 @@ export const positionInd = (position) => {
         return ""
   }
 }
+
+export const getTotalMoney = (allData) => {
+  let money = 0
+
+  allData.forEach((d) => {
+    money += d.money_balance
+  })
+
+  return ""+ money
+}
+
+export const getTotalRO = (allData) => {
+  let ro = 0
+
+  allData.forEach((d) => {
+    ro += d.ro_money_balance
+  })
+
+  return ""+ ro
+}
+
+export const handleShowSend = (selectSend) => {
+  if (selectSend.money) {
+    return "Keuangan"
+  }
+
+  if (selectSend.ro) {
+    return  "Repeat Order"
+  }
+
+  if (selectSend.sas) {
+    return "SAS"
+  }
+
+  return ""
+}

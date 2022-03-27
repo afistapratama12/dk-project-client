@@ -1,7 +1,5 @@
-import { Box, Button, Flex, Text, chakra, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel} from "@chakra-ui/react"
+import { Box, Button, Flex, Text, chakra, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Spinner} from "@chakra-ui/react"
 import { useState } from "react";
-
-import { Link } from 'react-router-dom'
 
 import { FaPlusCircle } from "react-icons/fa";
 import { axiosPost } from "../API/axios";
@@ -10,6 +8,7 @@ import { positionInd } from "../helper/helper";
 import swal from 'sweetalert';
 import { PartCardHead } from "./donwline/PartCardHead";
 import { PartCardMember } from "./donwline/PartCardMember";
+import { buttonResponsive, fontDlResp } from "../theme/font";
 
 const CFaPlusCircle = chakra(FaPlusCircle);
 
@@ -20,13 +19,15 @@ const userId = localStorage.getItem("id")
 
 // statusCard = 'head' | 'empty' | 'member'
 export function Card({ data, statusCard, position, parentId, loading }) {
-
     const { isOpen, onOpen, onClose} = useDisclosure()
+
+    const [loadingCreate, setLoadingCreate] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
 
     const [registerData, setRegisterData] = useState({
         fullname: "",
         phone_number: "",
-        parent_id: +parentId,
+        parent_id: 0,
         position: position
     })
 
@@ -34,36 +35,57 @@ export function Card({ data, statusCard, position, parentId, loading }) {
         // pop up modal register user
         e.preventDefault()
         onOpen()
+        setRegisterData({...registerData, parent_id : +parentId})
     }
 
-    const handleRegisterData = (e, key) => {
-        e.preventDefault()
-        if (key === 'fullname') setRegisterData({ ...registerData, fullname: e.target.value})
-        if (key === 'phone_number') setRegisterData({ ...registerData, phone_number: e.target.value})
+    const handleClose = () => {
+        setErrorMessage(null)
+        onClose()
     }
+
+    console.log(registerData)
 
     const postCrateUser = async (e) => {
         e.preventDefault()
 
-        try {
-            const resp = await axiosPost(auth, `/v1/users/register`, registerData)
-            
-            if (resp.status === 201) {
-                // register berhasil
-                onClose()
+        if (registerData.fullname === "") {
+            setErrorMessage("mohon isi nama lengkap")
+        } else if (registerData.phone_number === "") {
+            setErrorMessage("mohon masukkan nomer HP / WA")
+        } else if (registerData.phone_number.length < 11 || registerData.phone_number.slice(0,2) !== "08") {
+            setErrorMessage("mohon masukan nomer yang benar")
+        } else {
+            setLoadingCreate(true)
 
-                swal({
-                    title: "Berhasil!",
-                    text: `Downline anda berhasil di daftarkan, nama : ${registerData.fullname}`,
-                    icon: "success",
-                    timer: 1500,
-                    buttons: false,
-                }).then(function() {
-                    window.location.reload(true)
-                })
+            try {
+                const resp = await axiosPost(auth, `/v1/users/register`, registerData)
+                
+                if (resp.status === 201) {
+                    // register berhasil
+                    onClose()
+                    setErrorMessage(null)
+
+                    swal({
+                        title: "Berhasil!",
+                        text: `Downline anda berhasil di daftarkan, nama : ${registerData.fullname}`,
+                        icon: "success",
+                        timer: 1500,
+                        buttons: false,
+                    }).then(function() {
+                        window.location.reload(true)
+                    })
+                }
+            } catch (err) {
+                console.log(err.response)
+
+                if(err?.response?.status === 500) {
+                    if (err.response?.data?.errors === "unsufficient sas balance (balance tidak cukup)") {
+                        setErrorMessage("Saldo SAS tidak mencukupi")
+                    }
+                }
+            } finally {
+                setLoadingCreate(false)
             }
-        } catch (err) {
-            console.log(err.response)
         }
     } 
 
@@ -73,12 +95,18 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             borderRadius={'15px'}
             bg="#F2F0F0"
             pt={2}
-            width={{ md: '180px', base: '100%' }}
+            width={{
+                xl : "180px",
+                sm: "170px",
+                base: "135px"
+            }}
         >
             <Box
                 align={'center'}
+                fontSize={fontDlResp}
+                // bg={'#ffa07a'}
             >
-                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data?.fullname}</Text>
+                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data?.fullname.split(" ")[0]}</Text>
                 <Text fontWeight={'bold'}>{data?.role === "admin" ? "Tengah" : positionInd(position)}</Text>
             </Box>
 
@@ -87,7 +115,6 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             { statusCard === 'empty' && (
                 <Box
                     borderRadius={15}
-                    bg='#E8E8E8'
                     pt={2}
                     pb={2}
                     pl={4}
@@ -112,6 +139,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                             pr={2}
                             borderRadius={15}
                             onClick={handleCreateUser}
+                            fontSize={buttonResponsive}
                         >Daftarkan Orang</Button>
                     </Box>
                 </Box>)
@@ -123,7 +151,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
 
         {/* for modal */}
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />
         <ModalContent
         >
@@ -131,17 +159,30 @@ export function Card({ data, statusCard, position, parentId, loading }) {
           <ModalCloseButton />
 
           <Box
-            pl={6}
-            pr={6}
+            px={6}
           >
+            
+            {
+                errorMessage && (
+                <Box
+                    bg='pink'
+                    py={2}
+                    pl={2}
+                    mb={2}
+                >
+                    <Text>{errorMessage}</Text>
+                </Box>
+                )
+            }
+
             <FormLabel>Nama Lengkap</FormLabel>
             <Input
-                onChange={e => handleRegisterData(e, 'fullname')}
+                onChange={e => setRegisterData({ ...registerData, fullname: e.target.value})}
                 value={registerData.fullname}
             />
             <FormLabel>No Telepon / WA</FormLabel>
             <Input
-                onChange={e => handleRegisterData(e, 'phone_number')}
+                onChange={e => setRegisterData({ ...registerData, phone_number: e.target.value})}
                 value={registerData.phone_number}
             />
             <Box
@@ -149,14 +190,16 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                 align={'center'}
             >
                 <Button 
+                    width={'120px'}
                     fontWeight={'bold'}
                     onClick={postCrateUser}
-                >Daftarkan</Button>
+                    disabled={loadingCreate ? true : false}
+                >{loadingCreate ? <Spinner/> : "Daftarkan"}</Button>
             </Box>
           </Box>
           
           <ModalFooter>
-            <Button colorScheme='pink' mr={3} onClick={onClose}>
+            <Button bg={'yellow.700'} color={'gray.50'} mr={3} onClick={handleClose}>
               Batal
             </Button>
           </ModalFooter>
@@ -209,12 +252,7 @@ function HomeDownline(props) {
         <>
         <Box 
             maxW={'7xl'}
-            backgroundColor="gray.50"
         >
-            <Box>
-                <Link to="/withdraw"><Button>Ajukan Penarikan</Button></Link>
-            </Box>
-
             <Box
                 align={'center'}
                 p={2}
@@ -230,15 +268,30 @@ function HomeDownline(props) {
                     pb={1}
                 >
                     { baseId !== userId ? 
-                    <Button onClick={handlePrev}>Kembali Keatas</Button> : 
-                    <>
-                    <br/>
-                    <br/>
-                    </>
+                    <Button 
+                        onClick={handlePrev}
+                        fontSize={buttonResponsive}   
+                        bg={'#AA4A30'}
+                        color={'white'} 
+                    >Kembali Keatas</Button> : 
+                    <Box
+                        fontSize={{
+                            xl: '18px',
+                            md: '16px',
+                            sm: '14px',
+                            base: '14px'
+                        }}
+                        p={4}
+                    >
+                        <Text fontWeight={'bold'}>Paling Atas</Text>
+                    </Box>
                     }
                 </Box>
 
-                <Card data={user} position={user?.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading}/>
+                <Flex justifyContent={'center'}>
+                    <Card data={user} position={user?.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading}/>
+                </Flex>
+               
                 <Flex
                     mt={6}
                     justifyContent={'space-around'}
@@ -248,7 +301,12 @@ function HomeDownline(props) {
                         <Box
                             mt={4}    
                         >
-                            { showMore?.left && <Button onClick={e => handleSeeDownline(e, downline.left)}>Lihat Downline</Button> }
+                            { showMore?.left && <Button 
+                                onClick={e => handleSeeDownline(e, downline.left)}
+                                fontSize={buttonResponsive}  
+                                bg={'#AA4A30'}
+                                color={'white'}  
+                            >Lihat Downline</Button> }
                         </Box>
                     </Box>
                     <Box>
@@ -256,7 +314,12 @@ function HomeDownline(props) {
                         <Box
                             mt={4}    
                         >
-                            { showMore?.center && <Button onClick={e => handleSeeDownline(e, downline.center)}>Lihat Downline</Button> }
+                            { showMore?.center && <Button 
+                                onClick={e => handleSeeDownline(e, downline.center)}
+                                fontSize={buttonResponsive}
+                                bg={'#AA4A30'}
+                                color={'white'}
+                            >Lihat Downline</Button> }
                         </Box>
                     </Box>
                     <Box>
@@ -264,7 +327,12 @@ function HomeDownline(props) {
                         <Box
                             mt={4}    
                         >
-                            { showMore?.right && <Button onClick={e => handleSeeDownline(e, downline?.right)}>Lihat Downline</Button> }
+                            { showMore?.right && <Button 
+                                onClick={e => handleSeeDownline(e, downline?.right)}
+                                fontSize={buttonResponsive}
+                                bg={'#AA4A30'}
+                                color={'white'}
+                            >Lihat Downline</Button> }
                         </Box>
                     </Box>
                 </Flex>

@@ -1,10 +1,11 @@
 import { 
-    Box, Button, Skeleton, useDisclosure,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel
+    Box, Button, useDisclosure,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Flex
 } from "@chakra-ui/react"
 import { useState } from "react"
 import swal from "sweetalert"
 import { axiosPost } from "../../API/axios"
+import { buttonResponsive } from "../../theme/font"
 
 const userId = localStorage.getItem("id")
 const auth = localStorage.getItem("access_token")
@@ -83,7 +84,6 @@ function PartCardMember({isLoading, toId}) {
 
  return(
      <>
-     <Skeleton isLoaded={isLoading? false : true}>
         <Box
             borderRadius={15}
             bg='#E8E8E8'
@@ -93,94 +93,98 @@ function PartCardMember({isLoading, toId}) {
             pr={4}
             align={'center'}
         >
-            <Button onClick={() => {
-                setOpenModal({ SAS: false, RO: false, money: true})
-                onOpen()
-            }}
-                borderRadius={15}
-            >
-                Kirim Uang
-            </Button>
-            <Button onClick={() => {
-                setOpenModal({ SAS: true, money: false, RO: false})
-                onOpen()
-            }}
-                borderRadius={15}
-            >
-                Kirim SAS
-            </Button>
-            <Button
-                onClick={() => {
-                    setOpenModal({RO: true, money: false, SAS: false})
+            <Flex direction={'column'}>
+                <Button onClick={() => {
+                    setOpenModal({ SAS: false, RO: false, money: true})
                     onOpen()
                 }}
-                borderRadius={15}
-            >
-                Kirim RO
-            </Button>
+                    borderRadius={15}
+                    fontSize={buttonResponsive}
+                >
+                    Kirim Uang
+                </Button>
+                <Button onClick={() => {
+                    setOpenModal({ SAS: true, money: false, RO: false})
+                    onOpen()
+                }}
+                    borderRadius={15}
+                    fontSize={buttonResponsive}
+                >
+                    Kirim SAS
+                </Button>
+                <Button
+                    onClick={() => {
+                        setOpenModal({RO: true, money: false, SAS: false})
+                        onOpen()
+                    }}
+                    borderRadius={15}
+                    fontSize={buttonResponsive}
+                >
+                    Kirim RO
+                </Button>
+            </Flex>
         </Box>
-    </Skeleton>
 
-    <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent
-        >
-          <ModalHeader>Kirim Saldo</ModalHeader>
-          <ModalCloseButton />
-
-          <Box
-            pl={6}
-            pr={6}
-          >
-
-            { openModal.money && (
-                    <>
-                    <FormLabel>Kirim Saldo Uang</FormLabel>
-                    <Input
-                        type='number'
-                        onChange={e => handleSendData(e, "money_balance")}
-                        value={sendData?.money_balance}
-                    />
-                    </>
-            )}
-            { openModal.SAS && (
-                    <>
-                    <FormLabel>Kirim Saldo SAS</FormLabel>
-                    <Input
-                        type='number'
-                        onChange={e => handleSendData(e, "sas_balance")}
-                        value={sendData?.sas_balance}
-                    />
-                    </>
-            )}
-            { openModal.RO && (
-                    <>
-                    <FormLabel>Kirim Saldo RO</FormLabel>
-                    <Input
-                        type='number'
-                        onChange={e => handleSendData(e, "ro_balance")}
-                        value={sendData?.ro_balance}
-                    />
-                    </>
-            )}
-            <Box
-                pt={4}
-                align={'center'}
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent
             >
-                <Button 
-                    fontWeight={'bold'}
-                    onClick={postTransaction}
-                >Kirim</Button>
-            </Box>
+            <ModalHeader>Kirim Saldo</ModalHeader>
+            <ModalCloseButton />
 
-          </Box>
-          <ModalFooter>
-            <Button colorScheme='pink' mr={3} onClick={onClose}>
-              Batal
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+            <Box
+                pl={6}
+                pr={6}
+            >
+
+                { openModal.money && (
+                        <>
+                        <FormLabel>Kirim Saldo Uang</FormLabel>
+                        <Input
+                            type='number'
+                            onChange={e => handleSendData(e, "money_balance")}
+                            value={sendData?.money_balance}
+                        />
+                        </>
+                )}
+                { openModal.SAS && (
+                        <>
+                        <FormLabel>Kirim Saldo SAS</FormLabel>
+                        <Input
+                            type='number'
+                            onChange={e => handleSendData(e, "sas_balance")}
+                            value={sendData?.sas_balance}
+                        />
+                        </>
+                )}
+                { openModal.RO && (
+                        <>
+                        <FormLabel>Kirim Saldo RO</FormLabel>
+                        <Input
+                            type='number'
+                            onChange={e => handleSendData(e, "ro_balance")}
+                            value={sendData?.ro_balance}
+                        />
+                        </>
+                )}
+                <Box
+                    pt={4}
+                    align={'center'}
+                >
+                    <Button 
+                        fontWeight={'bold'}
+                        onClick={postTransaction}
+                    >Kirim</Button>
+                </Box>
+
+            </Box>
+            <ModalFooter>
+                <Button colorScheme='pink' mr={3} onClick={onClose}>
+                Batal
+                </Button>
+            </ModalFooter>
+            </ModalContent>
+        </Modal>
     </>
  )
 }

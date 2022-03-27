@@ -1,8 +1,9 @@
 import { 
-    Box, Button, Flex, Skeleton, Text, useDisclosure,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel
+    Box, Button, Flex, Text, useDisclosure,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter
 } from "@chakra-ui/react"
 import { formatMoney } from "../../helper/helper"
+import { buttonResponsive, fontDlResp, textResponsive } from "../../theme/font"
 
 function PartCardHead({ data, isLoading }) {
     const { isOpen, onOpen, onClose} = useDisclosure()
@@ -14,10 +15,9 @@ function PartCardHead({ data, isLoading }) {
 
     return(
         <>
-        <Skeleton isLoaded={isLoading? false : true}>
             <Box
                 borderRadius={15}
-                bg='#E8E8E8'
+                bg='#ffecd4'
                 pt={2}
                 pb={2}
                 pl={4}
@@ -25,6 +25,7 @@ function PartCardHead({ data, isLoading }) {
             >
                 <Box
                     pb={2}
+                    fontSize={fontDlResp}
                 >
                     <Flex
                         justifyContent={'space-between'}
@@ -51,11 +52,12 @@ function PartCardHead({ data, isLoading }) {
                     <Button
                         borderRadius={15}
                         onClick={handleShowUser}
+                        fontSize={buttonResponsive}
+                        bg={'#D57149'}
+                        color={'white'}
                     >Info Lengkap</Button>
                 </Box>
             </Box>
-        </Skeleton>
-
 
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
