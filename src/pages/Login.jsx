@@ -82,9 +82,15 @@ function Login() {
     
                 setIsError(false)
 
+              if ( response.data?.role === 'admin') {
                 history.push({
-                    pathname: "/"
+                  pathname: "/admin"
                 })
+              } else if (response.data?.role === "user") {
+                history.push({
+                  pathname: "/"
+                })
+              }
             }            
         } catch (err) {
             if (err.response?.status === 500) {

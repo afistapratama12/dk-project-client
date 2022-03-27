@@ -333,7 +333,7 @@ const NAV_ITEMS = [
 const NAV_ADMIN_ITEMS = [
   {
     label: "Kirim Saldo",
-    href: "/send_balance"
+    href: "/send-balance"
   },
   {
     label: "Penarikan",

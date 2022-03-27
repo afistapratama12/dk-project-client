@@ -6,7 +6,7 @@ function OnlyUserRoute(props) {
 
     const auth = !!localStorage.getItem("access_token")
 
-    return role === 'user' && id !== 1 && auth ? <Route {...props}>{props.children}</Route> : <Redirect to="/admin" />
+    return role === 'user' && id !== 1 && auth ? <Route {...props}>{props.children}</Route> : <Redirect to="/login" />
 }
 
 export { OnlyUserRoute }
