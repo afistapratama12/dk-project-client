@@ -43,8 +43,6 @@ export function Card({ data, statusCard, position, parentId, loading }) {
         onClose()
     }
 
-    console.log(registerData)
-
     const postCrateUser = async (e) => {
         e.preventDefault()
 
@@ -98,7 +96,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             width={{
                 xl : "180px",
                 sm: "170px",
-                base: "135px"
+                base: "125px"
             }}
         >
             <Box
@@ -131,11 +129,11 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                             <CFaPlusCircle 
                                 mt={2}
                                 mb={2}
-                                size={56}
+                                size={53}
                             />
                         </Box>
                         <Button
-                            pl={2}
+                            pl={0}
                             pr={2}
                             borderRadius={15}
                             onClick={handleCreateUser}

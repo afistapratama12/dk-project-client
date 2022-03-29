@@ -1,9 +1,8 @@
 import axios from "axios";
 
 //TODO: get env file SERVICE_URL
-
 export const Axios = axios.create({
-    baseURL: "https://dk-project-api.onrender.com"
+    baseURL: "http://localhost:8080"
 })
 
 
@@ -28,13 +27,24 @@ export const axiosPost = (auth, url, insertData) => {
     })
 }
 
-export const axiosPatch = (auth, url, insertData) => {
+export const axiosPatch = (auth, url, patchData) => {
     return Axios({
         method: "PATCH",
         url: url,
         headers: {
             Authorization: auth
         },
-        data: insertData
+        data: patchData
+    })
+}
+
+export const axiosPut = (auth, url, putData) => {
+    return Axios({
+        method: "PUT",
+        url: url,
+        headers: {
+            Authorization: auth
+        },
+        data: putData
     })
 }

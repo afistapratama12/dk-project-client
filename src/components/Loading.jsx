@@ -6,7 +6,7 @@ function Loading() {
         style={{
             position: "absolute",
             top: 0,
-            width: "100%",
+            width: "100vw",
             height: "100%",
             zIndex: "10",
             backgroundColor: "rgb(0,0,0,0.2"

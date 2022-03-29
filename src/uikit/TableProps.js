@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import { textResponsive } from "../theme/font";
 
 export const TableProps = ({ children, ...rest }) => {
   return (
@@ -47,6 +46,8 @@ export const Th= ({ children, ...rest }) => {
       borderBottomColor="gray.200"
       fontSize={{
         base:"11px",
+        sm: "12px",
+        md: "14px",
         xl: '18px'
         }}
       {...{ as: "th" }}
@@ -68,14 +69,16 @@ export const Tr= ({ children, ...rest }) => {
 
 export const Td = ({ children, ...rest }) => (
   <Box
-    p={4}
+    p={2}
     borderBottom="1px"
     borderBottomColor="gray.200"
     {...{ as: "td" }}
     {...rest}
     fontSize={{
         xl: '18px',
-        base: "12px"
+        sm: "12px",
+        md: "14px",
+        base: "11px"
     }}
   >
     {children}

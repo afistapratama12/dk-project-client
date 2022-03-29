@@ -98,14 +98,13 @@ function Home() {
 
     return (
         <>
+        { isLoading && <Loading/>}
         <NavigationBar/>
         <Box
             height="100vh"
             maxW={'7xl'}
             margin="auto"
         >
-            { isLoading && <Loading/>}
-
 
             <Flex justifyContent={'space-between'}>
                 <Box

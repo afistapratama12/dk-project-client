@@ -9,7 +9,7 @@ export const buttonResponsive = {
     xl: '18px',
     md: '16px',
     sm: "12px",
-    base: "12px"
+    base: "11px"
 }
 
 export const fontDlResp = {

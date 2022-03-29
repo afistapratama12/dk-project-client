@@ -1,7 +1,7 @@
 import { Box, Button, Collapse, Flex, FormLabel, Input, Modal, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import swal from "sweetalert"
-import { axiosGet, axiosPost } from "../API/axios"
+import { axiosGet, axiosPost, axiosPut } from "../API/axios"
 import { Loading } from "../components/Loading"
 import { NavigationBar } from "../components/Navbar.jsx"
 import { formatMoney } from "../helper/helper"
@@ -22,7 +22,7 @@ export function TableWithdraw({ wdReqHistory }) {
             <TableProps>
                 <Thead>
                     <Tr>
-                        <Th width={'12%'} pl={-1}>No</Th>
+                        <Th width={'10%'} pl={-1}>No</Th>
                         <Th width={'20%'}>Penarikan Uang</Th>
                         <Th width={'20%'}>Penarikan RO</Th>
                         <Th>Bonus RO dan Jaringan</Th>
@@ -93,7 +93,9 @@ function Withdraw() {
 
             const respBankInfo = await axiosGet(auth, `/v1/bank_account`)
 
-            if (respBankInfo?.data?.Id !== 0 && respBankInfo?.data?.user_id !== 0) {
+            console.log("dapat resp bank info", respBankInfo)
+
+            if (respBankInfo.data.id !== 0 && respBankInfo.data.user_id !== 0) {
                 setBankInfo(respBankInfo?.data)
             }
 
@@ -101,13 +103,11 @@ function Withdraw() {
             setWqReqHistory(respWR?.data)
 
         } catch (err) {
-            console.log(err.response)
+            console.log(err?.response)
         } finally {
             setLoading(false)
         }
     }
-
-    console.log(newReqBalance)
 
     useEffect(() => {
         getBankAccInfo()
@@ -115,6 +115,14 @@ function Withdraw() {
 
     const handleBankData = (e) => {
         e.preventDefault()
+        if (bankInfo) {
+            setNewBankData({ 
+                user_id: +userDetail.id, 
+                bank_name: bankInfo.bank_name, 
+                bank_number: bankInfo.bank_number,
+                name_on_bank: bankInfo.name_on_bank
+            })
+        }
 
         onOpen()
     }
@@ -165,11 +173,13 @@ function Withdraw() {
         } else {
             setLoadingCreate(false)
         }
-
     }
 
-    const postNewBankData = async (e) => {
+    // isHaveBankData : true | false
+    const postNewBankData = async (e, isHaveBankInfo) => {
         e.preventDefault()
+
+        console.log(isHaveBankInfo)
 
         if (newBankData.bank_name === "") {
             setErrorMessage("Mohon isi nama bank")
@@ -180,22 +190,43 @@ function Withdraw() {
         } else {
             setLoadingCreate(true)
             try {
-                const resp = await axiosPost(auth, `/v1/bank_account`, newBankData)
+                if (isHaveBankInfo) {
+                   const resp =  await axiosPut(auth, `/v1/bank_account/${bankInfo.id}`, newBankData)
 
-                if (resp.status === 201) {
-                    onClose()
-                    setErrorMessage(null)
+                   console.log(resp)
+                   if (resp.status === 200 && resp.statusText === "OK") {
+                        onClose()
+                        setErrorMessage(null)
 
-                    swal({
-                        title: "Berhasil!",
-                        text: `Data bank berhasil ditambahkan`,
-                        icon: "success",
-                        timer: 1500,
-                        buttons: false, 
-                    }).then(function() {
-                        window.location.reload(true)
-                    })
+                        swal({
+                            title: "Berhasil!",
+                            text: `Data bank berhasil diperbarui`,
+                            icon: "success",
+                            timer: 1500,
+                            buttons: false, 
+                        }).then(function() {
+                            window.location.reload(true)
+                        })
+                    }
+                } else {
+                    const resp =  await axiosPost(auth, `/v1/bank_account`, newBankData)
+                    if (resp.status === 201) {
+                        onClose()
+                        setErrorMessage(null)
+
+                        swal({
+                            title: "Berhasil!",
+                            text: `Data bank berhasil ditambahkan`,
+                            icon: "success",
+                            timer: 1500,
+                            buttons: false, 
+                        }).then(function() {
+                            window.location.reload(true)
+                        })
+                    }
                 }
+
+
             } catch (err) {
                 console.log(err?.response)
             } finally {
@@ -277,6 +308,7 @@ function Withdraw() {
                             align={'center'}
                         >
                             <Button
+                                onClick={handleBankData}
                                 borderRadius={'15px'}
                                 bg={'#AA4A30'}
                                 color={'white'}
@@ -305,7 +337,7 @@ function Withdraw() {
                         <Box>
                             <Button
                                 onClick={e => {
-                                    if (openedWd === "money" || openedWd === "") {
+                                    if (openedWd === "money" || openWd === false) {
                                         setOpenWd(!openWd)
                                     }
 
@@ -333,7 +365,7 @@ function Withdraw() {
                         <Box>
                             <Button
                                 onClick={e =>  { 
-                                    if (openedWd === "ro" || openedWd === "") {
+                                    if (openedWd === "ro" || openWd === false) {
                                         setOpenWd(!openWd)  
                                     }
                                     setOpenedWd("ro")
@@ -360,7 +392,7 @@ function Withdraw() {
                             bg={'#E89F71'}
                             width={{
                                 xl: '430px',
-                                base: "380px"
+                                base: "345px"
                             }}
                             borderRadius={'15px'}
                             p={4}
@@ -382,6 +414,7 @@ function Withdraw() {
                                     >
                                     Masukkan Saldo Keuangan</FormLabel>
                                     <Input 
+                                        bg={'gray.50'}
                                         type={'text'}
                                         value={newReqBalance.money_balance ?? ""}
                                         onChange={e => setNewReqBalance({ user_id: +userDetail.id , bank_acc_id: +bankInfo.id, money_balance: e.target.value})}    
@@ -415,8 +448,10 @@ function Withdraw() {
                                     </Box>
                                     <FormLabel
                                         fontWeight={'bold'}
+                                        fontSize={textResponsive}
                                     >Masukkan Saldo Repeat Order</FormLabel>
                                     <Input 
+                                        bg={'gray.50'}
                                         type={'text'}
                                         value={newReqBalance.ro_balance ?? ""}
                                         onChange={e => setNewReqBalance({ user_id: +userDetail.id , bank_acc_id: +bankInfo.id, ro_balance: e.target.value})}
@@ -527,7 +562,7 @@ function Withdraw() {
                         <Button
                             width={'120px'}
                             fontWeight={'bold'}
-                            onClick={postNewBankData}
+                            onClick={e => postNewBankData(e, !!bankInfo)}
                             disabled={loadingCreate ? true : false}
                         >
                             { loadingCreate ? <Spinner/> : "Kirim"}

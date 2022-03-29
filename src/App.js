@@ -10,6 +10,8 @@ import {
   Switch,
 } from "react-router-dom";
 
+import Helmet from 'react-helmet';
+
 import { Login } from "./pages/Login"
 import { path } from "./routes/route"
 import { OnlyPublicRoute } from "./routes/OnlyPublicRoute";
@@ -23,10 +25,7 @@ import { SendBalance } from './pages/SendBalance';
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box
-        backgroundColor={'#EDCFA9'}
-        bg={'#EDCFA9'}
-      >
+      <Helmet bodyAttributes={{style: 'background-color : #EDCFA9'}}/>
       <Router>
           <Switch>
             <OnlyPublicRoute exact path={path.login} component={Login}/>
@@ -36,8 +35,6 @@ function App() {
             <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
           </Switch>
       </Router>
-      </Box>
-
       {/* <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />

@@ -81,7 +81,7 @@ export function NavigationBar() {
             
             <Link
               as={ReactLink}
-              to="/"
+              to={role === "admin" ? "/admin" : "/"}
             >
               <Image
                   alt="logonav"
@@ -179,7 +179,8 @@ const DesktopNav = ({role}) => {
                   as={ReactLink}
                   to={navItem.href ?? '#'}
                   fontSize={'md'}
-                  color={linkColor}
+                  fontWeight={'bold'}
+                  color={'gray.700'}
                   _hover={{
                     textDecoration: 'none',
                     color: linkHoverColor,

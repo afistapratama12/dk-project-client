@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Box, Button, Flex, Spinner, Text} from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import swal from "sweetalert"
 import { axiosGet, axiosPatch } from "../API/axios.js"
 import { Loading } from "../components/Loading.jsx"
 import { NavigationBar } from "../components/Navbar.jsx"
 import { formatMoney, getTotalMoney, getTotalRO } from "../helper/helper.js"
+import { TableProps, Tbody, Td, Th, Thead, Tr } from "../uikit/TableProps.js"
 
 function AdminWithdraw() {    
     const auth = localStorage.getItem("access_token")
@@ -25,8 +26,8 @@ function AdminWithdraw() {
             const allWdRes = await axiosGet(auth, `/v1/withdraws`)
             const wdInWeek = await axiosGet(auth, `v1/withdraws/in_week`)
 
-            setListWdReq(allWdRes?.data)
-            setListWdWeek(wdInWeek?.data)
+            setListWdReq(allWdRes?.data.sort((a, b) => new Date(a.updated_at)- new Date(b.updated_at)))
+            setListWdWeek(wdInWeek?.data.sort((a, b) => new Date(a.updated_at)- new Date(b.updated_at)))
         } catch (err) {
             console.log(err.response)
         } finally {
@@ -38,10 +39,7 @@ function AdminWithdraw() {
         getListWdReq()
     },[])
 
-    const handleFilter = (e, tag) => {
-        e.preventDefault()
-        setFilterTag(tag)
-    }
+    console.log(listWdReq)
 
     const postApprove = async (e, idLoading, id, approved) => {
         e.preventDefault()
@@ -72,11 +70,14 @@ function AdminWithdraw() {
     
     return (
         <>
-
         { loading && <Loading/>}
-
         <NavigationBar/>
 
+        <Box
+            overflowX={'hidden'}
+            maxW={'7xl'}
+            margin={'auto'}
+        >
         <Box
             bg={'yellow.400'}
             pl={4}
@@ -84,7 +85,18 @@ function AdminWithdraw() {
             py={5}
             mx={4}
             mt={2}
-            w={'370px'}
+            w={{
+                xl:'370px',
+                md: '370px',
+                sm: '350px',
+                base: '340px'
+            }}
+
+            fontSize={{
+                xl: "18px",
+                base: "14px"
+            }}
+
             borderRadius={10}
         >
             <Text
@@ -100,7 +112,7 @@ function AdminWithdraw() {
             </Flex>
         </Box>
 
-        <Box pt={2} pl={3}>
+        <Box pt={2} pl={3} mt={2}>
             <Flex>
                 <Box
                     p={2}
@@ -110,7 +122,7 @@ function AdminWithdraw() {
                 </Box>
                 <Box>
                     <Button 
-                        onClick={e => handleFilter(e, "week")}
+                        onClick={e => setFilterTag("week")}
                         bg={filterTag === 'week' ? "yellow.700" : "gray.200"}
                         color={filterTag === 'week' ? "gray.50" : "black"}
                         _hover={{
@@ -118,7 +130,7 @@ function AdminWithdraw() {
                         }}    
                     >minggu ini</Button>
                     <Button 
-                        onClick={e => handleFilter(e, "all")} 
+                        onClick={e => setFilterTag("all")} 
                         ml={2}
                         bg={filterTag === 'all' ? "yellow.700" : "gray.200"}
                         color={filterTag === 'all' ? "gray.50" : "black"}
@@ -129,12 +141,30 @@ function AdminWithdraw() {
                 </Box>
             </Flex>
 
-            <Table variant='simple' maxW={'7xl'}>
+            <Box
+                overflow={'auto'}
+                mt={4}
+            >
+
+            <Box
+                width={{
+                    xl : "1300px",
+                    md: "1000px",
+                    sm : '700px',
+                    base: '700px'}}
+                display={'block'}
+            >
+            <TableProps>
                 <Thead>
                     <Tr>
-                        <Th>No</Th>
-                        <Th>Nama Lengkap</Th>
-                        <Th>No Telp</Th>
+                        <Th w={'10%'}>No</Th>
+                        <Th align={'left'}>Nama Lengkap</Th>
+                        <Th w={{
+                            xl: "200px",
+                            md: "200px",
+                            sm: "100px",
+                            base: "100px"
+                            }}>No Telp</Th>
                         <Th>Bank</Th>
                         <Th>No Rekening</Th>
                         <Th>Keuangan</Th>
@@ -143,14 +173,21 @@ function AdminWithdraw() {
                         <Th>Accept</Th>
                     </Tr>
                 </Thead>
-                <Tbody>
-                    { filterTag === "all" ? listWdReq?.map((wd, id) => (
+                <Tbody
+                    whiteSpace="nowrap"
+                >
+                { filterTag === "all" ? listWdReq?.map((wd, id) => (
                         <Tr key={id}>
-                            <Td>{id+ 1}</Td>
-                            <Td>{wd.fullname}</Td>
+                            <Td w={'10%'}>{id+ 1}</Td>
+                            <Td align={'left'}>{wd.fullname}</Td>
                             <Td>{wd.phone_number}</Td>
                             <Td>{wd.bank_name}</Td>
-                            <Td>{wd.bank_number}</Td>
+                            <Td w={
+                                {
+                                    xl: "300px",
+                                    md: "300px",
+                                    sm: "100px",
+                                    base: "100px"}}>{wd.bank_number}</Td>
                             <Td>{formatMoney(wd.money_balance)}</Td>
                             <Td>{formatMoney(wd.ro_money_balance)}</Td>
                             <Td>{wd.approved ? "Terkirim" : "Pending" }</Td>
@@ -163,15 +200,19 @@ function AdminWithdraw() {
                                     }}
                                     color="white"
                                     onClick={e => postApprove(e,id, wd.id, wd.approved)}
-                                >{ loadingSend && idToLoading == id ? <Spinner/> :
+                                >{ loadingSend && idToLoading === id ? <Spinner/> :
                                 wd.approved ? "Batal" : "Terima"}</Button>
                             </Td>
                         </Tr>
                     )) : listWdWeek?.map((wd, id) => (
                         <Tr key={id}>
-                        <Td>{id+ 1}</Td>
-                        <Td>{wd.fullname}</Td>
-                        <Td>{wd.phone_number}</Td>
+                        <Td w={'10%'}>{id+ 1}</Td>
+                        <Td align={'left'}>{wd.fullname}</Td>
+                        <Td w={{
+                                    xl: "300px",
+                                    md: "300px",
+                                    sm: "100px",
+                                    base: "100px"}}>{wd.phone_number}</Td>
                         <Td>{wd.bank_name}</Td>
                         <Td>{wd.bank_number}</Td>
                         <Td>{formatMoney(wd.money_balance)}</Td>
@@ -179,20 +220,35 @@ function AdminWithdraw() {
                         <Td>{wd.approved ? "Terkirim" : "Pending" }</Td>
                         <Td>
                             <Button 
-                                width={20}
+                                fontSize={{
+                                    xl: "18px",
+                                    md: "16px",
+                                    sm: "16px",
+                                    base: "14px"
+                                }}
+                                width={{
+                                    xl: 20,
+                                    md: 20,
+                                    sm: 14,
+                                    base: 14
+                                }}
                                 bg={wd.approved ? "red.500" : "blue.400"}
                                 _hover={{
                                     bg: wd.approved ? "red.300" : "blue.300"
                                 }}
                                 onClick={e => postApprove(e,id, wd.id, wd.approved)}
                                 color="white"
-                            >{ loadingSend && idToLoading == id ? <Spinner/> :
+                            >{ loadingSend && idToLoading === id ? <Spinner/> :
                             wd.approved ? "Batal" : "Terima"}</Button>
                         </Td>
                     </Tr>
                     ))}
                 </Tbody>
-            </Table>
+            </TableProps>
+            </Box>
+        </Box>
+        </Box>
+
         </Box>
         </>
     )

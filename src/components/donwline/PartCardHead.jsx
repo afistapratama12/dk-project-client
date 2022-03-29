@@ -50,6 +50,7 @@ function PartCardHead({ data, isLoading }) {
                     align="center"
                 >
                     <Button
+                        ml={-1}
                         borderRadius={15}
                         onClick={handleShowUser}
                         fontSize={buttonResponsive}
