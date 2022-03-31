@@ -56,6 +56,12 @@ function Home() {
         history.push("/withdraw")
     }
 
+    const toSendBalanceUser = (e) => {
+        e.preventDefault()
+
+        history.push("/user-send-balance")
+    }
+
     useEffect(() => {
         getUserDetailAndDownline()
     },[auth, baseId, userId])
@@ -95,7 +101,7 @@ function Home() {
             setIsLoading(false)
         }
     }
-
+    
     return (
         <>
         { isLoading && <Loading/>}
@@ -104,34 +110,62 @@ function Home() {
             height="100vh"
             maxW={'7xl'}
             margin="auto"
+            mb={10}
         >
 
-            <Flex justifyContent={'space-between'}>
+            <Box
+                px={4}
+                py={6}
+            >
+            <Flex 
+                justifyContent={'space-between'}
+                direction={{
+                    xl : "row",
+                    md: "row",
+                    sm: "column",
+                    base: "column"
+                }}
+            >
                 <Box
-                    px={4}
-                    py={6}
                 >
                     <Text 
                         fontWeight={'bold'}
                         fontSize={textResponsive}    
                     >Halo, {userDetail?.fullname}</Text>
                 </Box>
-                <Box
-                    px={4}
-                    py={4}
-                >
-                    <Button
-                        onClick={toWd}
-                        bg={'#AA4A30'}
-                        color={'white'}
-                        fontSize={buttonResponsive}
-                        _hover={{
-                            bg: `#c25d42`
-                        }}
-                    >Ajukan Penarikan</Button>        
-                </Box>
 
+                <Flex
+                    justifyContent={'space-evenly'}
+                    pt={4}
+                >
+                    <Box
+                    >
+                        <Button
+                            onClick={toSendBalanceUser}
+                            bg={'#AA4A30'}
+                            color={'white'}
+                            fontSize={buttonResponsive}
+                            _hover={{
+                                bg: `#c25d42`
+                            }}
+                        >Kirim Saldo</Button>        
+                    </Box>
+                    <Box
+                        pl={4}
+                    >
+                        <Button
+                            onClick={toWd}
+                            bg={'#AA4A30'}
+                            color={'white'}
+                            fontSize={buttonResponsive}
+                            _hover={{
+                                bg: `#c25d42`
+                            }}
+                        >Ajukan Penarikan</Button>        
+                    </Box>
+                </Flex>
             </Flex>
+            </Box>
 
             <HomeDownline 
                 userDetail={baseId === userId ? userDetail : userShow} 

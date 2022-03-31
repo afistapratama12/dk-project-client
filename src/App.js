@@ -21,6 +21,7 @@ import { AdminWithdraw } from './pages/AdminWithdraw';
 import { Withdraw } from './pages/Withdraw';
 import { OnlyUserRoute } from './routes/OnlyUserRoute';
 import { SendBalance } from './pages/SendBalance';
+import { UserSendBalance } from './pages/UserSendBalance';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <OnlyPublicRoute exact path={path.login} component={Login}/>
             <OnlyUserRoute  exact path={path.root} component={Home}/>
             <OnlyUserRoute  exact path={path.withdraw} component={Withdraw}/>
+            <OnlyUserRoute  exact path={path.userSendbalance} component={UserSendBalance}/>
             <OnlyAdminRoute  exact path={path.admin} component={AdminWithdraw}/>
             <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
           </Switch>

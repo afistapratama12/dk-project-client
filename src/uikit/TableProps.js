@@ -6,7 +6,8 @@ export const TableProps = ({ children, ...rest }) => {
     <Box
       table-layout="auto"
       border-collapse="collapse"
-      style={{ tableLayout: "fixed", width: "100%" }}
+      // tableLayout: "fixed",
+      style={{  width: "100%" }}
       {...{ as: "table" }}
       {...rest}
     >

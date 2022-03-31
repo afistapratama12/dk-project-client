@@ -1,10 +1,11 @@
 import axios from "axios";
 
+// https://dk-project-api.onrender.com
+
 //TODO: get env file SERVICE_URL
 export const Axios = axios.create({
-    baseURL: "https://dk-project-api.onrender.com"
+    baseURL: "http://localhost:8080"
 })
-
 
 export const axiosGet = (auth, url) => {
     return Axios({

@@ -7,7 +7,7 @@ function Loading() {
             position: "absolute",
             top: 0,
             width: "100vw",
-            height: "100%",
+            height: "100vh",
             zIndex: "10",
             backgroundColor: "rgb(0,0,0,0.2"
         }}

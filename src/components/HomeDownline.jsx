@@ -12,13 +12,10 @@ import { buttonResponsive, fontDlResp } from "../theme/font";
 
 const CFaPlusCircle = chakra(FaPlusCircle);
 
-const auth = localStorage.getItem("access_token")
-
-const baseId = localStorage.getItem("base_id")
-const userId = localStorage.getItem("id")
-
 // statusCard = 'head' | 'empty' | 'member'
 export function Card({ data, statusCard, position, parentId, loading }) {
+    const auth = localStorage.getItem("access_token")
+
     const { isOpen, onOpen, onClose} = useDisclosure()
 
     const [loadingCreate, setLoadingCreate] = useState(false)
@@ -53,6 +50,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
         } else if (registerData.phone_number.length < 11 || registerData.phone_number.slice(0,2) !== "08") {
             setErrorMessage("mohon masukan nomer yang benar")
         } else {
+
             setLoadingCreate(true)
 
             try {
@@ -86,6 +84,8 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             }
         }
     } 
+
+    console.log(registerData)
 
     return (
         <>
@@ -209,6 +209,9 @@ export function Card({ data, statusCard, position, parentId, loading }) {
 
 
 function HomeDownline(props) {
+    const baseId = localStorage.getItem("base_id")
+    const userId = localStorage.getItem("id")
+
     const user = props.userDetail
     const downline = props.downline // { left: obj, center: obj, right: obj}
     const showMore = props.showMore

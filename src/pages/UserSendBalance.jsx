@@ -9,13 +9,18 @@ import { NavigationBar } from "../components/Navbar.jsx"
 import { handleShowSend } from "../helper/helper.js"
 import { TableProps, Tbody, Td, Th, Thead, Tr } from "../uikit/TableProps.js"
 
+import { useHistory } from 'react-router-dom'
+
 import { FaSearch } from "react-icons/fa"
 import { textResponsive, buttonResponsive } from "../theme/font.jsx"
 
 const CFaSearch = chakra(FaSearch);
 
-function SendBalance() {
+function UserSendBalance() {
     const auth = localStorage.getItem("access_token")
+    const userId = localStorage.getItem("id")
+
+    const history = useHistory()
 
     const { isOpen, onOpen, onClose} = useDisclosure()
 
@@ -43,7 +48,7 @@ function SendBalance() {
         setLoading(true)
 
         try {
-            const { data } = await axiosGet(auth, `/v1/users`)
+            const { data } = await axiosGet(auth, `/v1/users/by_user`)
             setAllUser(data)
 
         } catch (err) {
@@ -77,7 +82,7 @@ function SendBalance() {
         } else {
             setLoadingSend(true)
             try {
-                const postData = {from_id: 1, to_id: +usertoSend}
+                const postData = {from_id: +userId, to_id: +usertoSend}
     
                 if (selectSend.money) {
                     postData["money_balance"] = +sendTotal
@@ -106,6 +111,15 @@ function SendBalance() {
                 }
             } catch (err) {
                 console.log(err.response)
+                if (err?.response?.status === 500) {
+                    const errBalance = ["SASBalance", "ROBalance", "MoneyBalance"]
+                    const check = errBalance.some(el => err.response.data.message.includes(el))
+                    if (check) {
+                        console.log("masuk sini")
+
+                        setErrorMessage("Saldo tidak cukup")
+                    }
+                }
             } finally {
                 setUserToSend(null)
                 setSendTotal(null)
@@ -135,12 +149,20 @@ function SendBalance() {
         setFilterOn(true)
     }
 
-    const handleClose = (e) => {
-        e.preventDefault()
+    const handleClose = () => {
+        // e.preventDefault()
         onClose()
 
         setErrorMessage(null)
     }
+
+    const backHome = (e) => {
+        e.preventDefault()
+
+        history.push("/")
+    }
+
+    console.log(allUser)
 
     return (
         <>
@@ -151,10 +173,29 @@ function SendBalance() {
         <Box maxW={'7xl'} margin='auto' pt={2}>
             <Box>
                 <Box px={6} pt={1}>
-                    <Text 
-                        fontWeight={'bold'}
-                        fontSize={textResponsive}
-                    >Pilih Saldo</Text>
+                    <Flex
+                        justifyContent={'space-between'}
+                    >
+                        <Text 
+                            fontWeight={'bold'}
+                            fontSize={textResponsive}
+                        >Pilih Saldo</Text>
+
+                        <Box
+                            color={'white'}
+                            bg={'#AA4A30'}
+                            _hover={{
+                              bg: 'yellow.500',
+                            }}
+                            fontSize={buttonResponsive}
+                            align={'center'}
+                            p={2}
+                            borderRadius={'15px'}
+                            onClick={backHome}
+                        >
+                            <Text>Kembali</Text>
+                        </Box>
+                    </Flex>
                 </Box>
                 <Box
                     mt={2}
@@ -275,15 +316,15 @@ function SendBalance() {
 
             </Box>
 
-            <Box 
-            >
-            <TableProps
-            >
+            <Box px={4} pt={2}>
+            
+            <TableProps>
                     <Thead>
                         <Tr>
-                            <Th width={'15%'}>No</Th>
-                            <Th width={'40%'}>Nama Lengkap</Th>
-                            <Th pl={-1}>No Telp</Th>
+                            <Th width={'15%'} pl={-1}>No</Th>
+                            <Th width={'40%'} pl={-1}>Nama Lengkap</Th>
+                            <Th width={'20%'}>Username</Th>
+                            <Th pl={-1}></Th>
                             <Th></Th>
                         </Tr>
                     </Thead>
@@ -291,9 +332,9 @@ function SendBalance() {
                         {
                             !filterOn ? allUser?.map((user, id) => (
                                 <Tr key={id}>
-                                    <Td>{id+1}</Td>
+                                    <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td pl={-1}>{user.phone_number}</Td>
+                                    <Td whiteSpace={'nowrap'}>{user.username}</Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}
@@ -303,9 +344,9 @@ function SendBalance() {
                                 </Tr>
                             )) : filterData.length !== 0 ? filterData?.map((user, id) => (
                                 <Tr key={id}>
-                                    <Td >{id+1}</Td>
+                                    <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td pl={-1}>{user.phone_number}</Td>
+                                    <Td whiteSpace={'nowrap'}>{user.username}</Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}
@@ -315,8 +356,10 @@ function SendBalance() {
                                 </Tr>
                             )) : <Box
                                     align={'center'}
-                                    pt={'13vh'}
-                                    width={'90vw'}
+                                    top="calc(50% - (58px / 2))" 
+                                    right="calc(50% - (180px / 2))"
+                                    position="fixed"
+                                    // width={'90vw'}
                                     height={'30vh'}
                                 >
                                 <Text
@@ -338,7 +381,7 @@ function SendBalance() {
           <ModalHeader
             fontSize={textResponsive}
           >Kirim Saldo</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClose={handleClose} />
 
           <Box
             pl={6}
@@ -413,4 +456,4 @@ function SendBalance() {
     )
 }
 
-export { SendBalance }
+export { UserSendBalance }

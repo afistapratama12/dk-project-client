@@ -3,6 +3,7 @@ export const path = {
     admin: "/admin",
     withdraw: "/withdraw",
     sendBalance: "/send-balance",
+    userSendbalance : "/user-send-balance",
     
     root: "/",
     any : "*"

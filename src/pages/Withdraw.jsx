@@ -5,8 +5,10 @@ import { axiosGet, axiosPost, axiosPut } from "../API/axios"
 import { Loading } from "../components/Loading"
 import { NavigationBar } from "../components/Navbar.jsx"
 import { formatMoney } from "../helper/helper"
-import { textResponsive } from "../theme/font"
+import { buttonResponsive, textResponsive } from "../theme/font"
 import { TableProps, Tbody, Td, Th, Thead, Tr } from "../uikit/TableProps"
+
+import { useHistory } from 'react-router-dom'
 
 
 export function TableWithdraw({ wdReqHistory }) {
@@ -59,6 +61,7 @@ export function TableWithdraw({ wdReqHistory }) {
 
 function Withdraw() {
     const auth = localStorage.getItem("access_token")
+    const history = useHistory()
 
     const { isOpen, onOpen, onClose} = useDisclosure()
 
@@ -244,6 +247,12 @@ function Withdraw() {
 
     }
 
+    const backHome = (e) => {
+        e.preventDefault()
+
+        history.push("/")
+    }
+
     return (
         <>
         { loading && <Loading/> }
@@ -260,10 +269,27 @@ function Withdraw() {
                 pt={5}
                 pb={3}
             >
+                <Flex justifyContent={"space-between"}>
                 <Text
                     fontWeight={'bold'}
                     fontSize={textResponsive}
                 >Penarikan Saldo</Text>
+
+                <Box
+                    color={'white'}
+                    bg={'#AA4A30'}
+                    _hover={{
+                        bg: 'yellow.500',
+                    }}
+                    fontSize={buttonResponsive}
+                    align={'center'}
+                    p={2}
+                    borderRadius={'15px'}
+                    onClick={backHome}
+                >
+                    <Text>Kembali</Text>
+                </Box>
+                </Flex>
             </Box>
 
             <Box

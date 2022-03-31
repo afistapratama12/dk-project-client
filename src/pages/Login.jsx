@@ -94,9 +94,11 @@ function Login() {
             }            
         } catch (err) {
             if (err.response?.status === 500) {
-                setErrMessage("Username dan PIN tidak terdaftar, mohon coba lagi")
+                setErrMessage("Username dan PIN tidak terdaftar, mohon periksa lagi")
             } else if (err.response?.status === 400) {
                 setErrMessage("Mohon masukkan username dan PIN")
+            } else {
+              console.log(err.response)
             }
 
             setIsError(true)
@@ -121,7 +123,6 @@ function Login() {
       flexDirection="column"
       width="100wh"
       height="100vh"
-      backgroundColor="gray.200"
       justifyContent="center"
       alignItems="center"
     >
@@ -131,9 +132,9 @@ function Login() {
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar bg="teal.500" />
-        <Heading color="teal.400">Welcome</Heading>
-        <Box minW={{ base: "90%", md: "468px" }}>
+        <Avatar bg="#AA4A30" />
+        <Heading color="#AA4A30">Welcome</Heading>
+        <Box w={{ base: "90%", md: "468px" }}>
           <form>
             <Stack
               spacing={4}
@@ -145,7 +146,8 @@ function Login() {
                   isError && (
                   <Box
                     borderRadius={'10px'}
-                    color='pink'
+                    color='red'
+                    fontWeight={'bold'}
                   >
                      <Text>{errMesage}</Text>
                   </Box>)
@@ -191,7 +193,8 @@ function Login() {
                 borderRadius={0}
                 type="submit"
                 variant="solid"
-                colorScheme="teal"
+                colorScheme="yellow.700"
+                bg={'#AA4A30'}
                 width="full"
                 onClick={submitLogin}
               >
