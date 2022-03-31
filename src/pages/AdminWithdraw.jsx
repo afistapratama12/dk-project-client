@@ -178,32 +178,42 @@ function AdminWithdraw() {
                 >
                 { filterTag === "all" ? listWdReq?.map((wd, id) => (
                         <Tr key={id}>
-                            <Td w={'10%'}>{id+ 1}</Td>
-                            <Td align={'left'}>{wd.fullname}</Td>
-                            <Td>{wd.phone_number}</Td>
-                            <Td>{wd.bank_name}</Td>
-                            <Td w={
-                                {
+                        <Td w={'10%'}>{id+ 1}</Td>
+                        <Td align={'left'}>{wd.fullname}</Td>
+                        <Td w={{
                                     xl: "300px",
                                     md: "300px",
                                     sm: "100px",
-                                    base: "100px"}}>{wd.bank_number}</Td>
-                            <Td>{formatMoney(wd.money_balance)}</Td>
-                            <Td>{formatMoney(wd.ro_money_balance)}</Td>
-                            <Td>{wd.approved ? "Terkirim" : "Pending" }</Td>
-                            <Td>
-                                <Button 
-                                    width={20}
-                                    bg={wd.approved ? "red.500" : "blue.400"}
-                                    _hover={{
-                                        bg: wd.approved ? "red.300" : "blue.300"
-                                    }}
-                                    color="white"
-                                    onClick={e => postApprove(e,id, wd.id, wd.approved)}
-                                >{ loadingSend && idToLoading === id ? <Spinner/> :
-                                wd.approved ? "Batal" : "Terima"}</Button>
-                            </Td>
-                        </Tr>
+                                    base: "100px"}}>{wd.phone_number}</Td>
+                        <Td>{wd.bank_name}</Td>
+                        <Td>{wd.bank_number}</Td>
+                        <Td>{formatMoney(wd.money_balance)}</Td>
+                        <Td>{formatMoney(wd.ro_money_balance)}</Td>
+                        <Td>{wd.approved ? "Terkirim" : "Pending" }</Td>
+                        <Td>
+                            <Button 
+                                fontSize={{
+                                    xl: "18px",
+                                    md: "16px",
+                                    sm: "16px",
+                                    base: "14px"
+                                }}
+                                width={{
+                                    xl: 20,
+                                    md: 20,
+                                    sm: 14,
+                                    base: 14
+                                }}
+                                bg={wd.approved ? "red.500" : "blue.400"}
+                                _hover={{
+                                    bg: wd.approved ? "red.300" : "blue.300"
+                                }}
+                                onClick={e => postApprove(e,id, wd.id, wd.approved)}
+                                color="white"
+                            >{ loadingSend && idToLoading === id ? <Spinner/> :
+                            wd.approved ? "Batal" : "Terima"}</Button>
+                        </Td>
+                    </Tr>
                     )) : listWdWeek?.map((wd, id) => (
                         <Tr key={id}>
                         <Td w={'10%'}>{id+ 1}</Td>
