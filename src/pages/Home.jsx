@@ -13,7 +13,6 @@ import { Button,
 import { buttonResponsive, textResponsive } from "../theme/font";
 import swal from "sweetalert";
 
-
 function Home() {
     const auth = localStorage.getItem("access_token")
     const role = localStorage.getItem("role")
@@ -174,6 +173,20 @@ function Home() {
                 }
             }
         } catch (err) {
+            if (err.response.status === 500) {
+               console.log("masuk error 500")
+                switch (err.response.data.errors) {
+                    case "admin SAS insufficient balance":
+                        setErrorMessage("<Text>terjadi kesalahan, persediaan saldo SAS admin tidak mencukupi. <br/> harap coba lagi nanti atau menghubungi admin<Text/>")
+                        break
+                    case "admin RO insufficient balance":
+                        setErrorMessage("<Text>terjadi kesalahan, persediaan saldo RO admin tidak mencukupi. <br/> harap coba lagi nanti atau menghubungi admin<Text/>")
+                        break
+                    default:
+                        setErrorMessage("<Text>terjadi kesalahan di internal sistem, mohon coba lagi nanti<Text/>")
+                }
+            }
+
             console.log(err.response)
         } finally {
             setLoadingSend(false)
@@ -289,7 +302,7 @@ function Home() {
 
             <Box>
                 {
-                    errorMessage && <Text
+                    errorMessage && <Box
                     mb={2}
                     fontWeight={'bold'}
                     color={'red'}
@@ -299,7 +312,8 @@ function Home() {
                         sm: '16px',
                         base:"14px"
                     }}
-                    >{errorMessage}</Text>
+                    dangerouslySetInnerHTML={{__html: errorMessage}}
+                    ></Box>
                 }
             </Box>
 

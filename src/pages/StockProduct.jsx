@@ -198,7 +198,18 @@ function StockProduct() {
                     </Box>
             </Box>
 
-            <Box mt={3} ml={4} px={5} pt={1} maxW={'335px'} bg={'yellow.400'} borderRadius={'15px'}>
+            <Box 
+                mt={3} 
+                ml={4} 
+                px={5} 
+                pt={1} 
+                maxW={{
+                    xl : "420px",
+                    md: "400px",
+                    base :'335px'
+                }} 
+                bg={'yellow.400'} 
+                borderRadius={'15px'}>
                 <TableProps>
                     <Thead>
                         <Tr>
@@ -264,7 +275,7 @@ function StockProduct() {
                             <Th>Tanggal</Th>
                             <Th>Deskripsi</Th>
                             <Th>Saldo</Th>
-                            <Th>Status</Th>
+                            <Th align={'center'}>Status</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -275,7 +286,9 @@ function StockProduct() {
                                     <Td>{b.created_at}</Td>
                                     <Td>{b.description}</Td>
                                     <Td>{b.ro_balance}</Td>
-                                    <Td>
+                                    <Td
+                                        align={'center'}
+                                    >
                                         <Box
                                             borderRadius={'15px'}
                                             fontSize={buttonResponsive}
@@ -294,7 +307,9 @@ function StockProduct() {
                                     <Td>{b.created_at}</Td>
                                     <Td>{b.description}</Td>
                                     <Td>{b.sas_balance}</Td>
-                                    <Td>
+                                    <Td
+                                        align={'center'}
+                                    >
                                         <Box
                                             borderRadius={'15px'}
                                             fontSize={buttonResponsive}

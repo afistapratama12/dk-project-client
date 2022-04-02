@@ -17,7 +17,13 @@ export const TableProps = ({ children, ...rest }) => {
 };
 export const Thead = ({ children, ...rest }) => {
   return (
-    <Box p={4} textAlign="left" {...{ as: "thead" }} {...rest}>
+    <Box 
+      p={4} 
+      textAlign="left" 
+      width={'100%'}
+      tableLayout='fixed'
+      {...{ as: "thead" }} 
+      {...rest}>
       {children}
     </Box>
   );
@@ -25,7 +31,11 @@ export const Thead = ({ children, ...rest }) => {
 
 export const Tbody = ({ children, ...rest }) => {
   return (
-    <Box p={4} {...{ as: "tbody" }} {...rest}>
+    <Box 
+      p={4} 
+      overflowY={'scroll'}
+      {...{ as: "tbody" }} 
+      {...rest}>
       {children}
     </Box>
   );
@@ -33,7 +43,10 @@ export const Tbody = ({ children, ...rest }) => {
 
 export const Tfoot = ({ children, ...rest }) => {
   return (
-    <Box p={4} {...{ as: "tfoot" }} {...rest}>
+    <Box 
+      p={4} 
+      {...{ as: "tfoot" }} 
+      {...rest}>
       {children}
     </Box>
   );
@@ -62,7 +75,10 @@ export const Th= ({ children, ...rest }) => {
 
 export const Tr= ({ children, ...rest }) => {
   return (
-    <Box my={1} {...{ as: "tr" }} {...rest}>
+    <Box 
+      my={1} 
+      {...{ as: "tr" }} 
+      {...rest}>
       {children}
     </Box>
   );
