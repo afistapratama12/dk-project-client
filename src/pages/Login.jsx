@@ -81,16 +81,11 @@ function Login() {
                 localStorage.setItem("base_id", response.data?.id) // for showing the base downline list
     
                 setIsError(false)
-
-              if ( response.data?.role === 'admin') {
-                history.push({
-                  pathname: "/admin"
-                })
-              } else if (response.data?.role === "user") {
+                
                 history.push({
                   pathname: "/"
                 })
-              }
+
             }            
         } catch (err) {
             if (err.response?.status === 500) {

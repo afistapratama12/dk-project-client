@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Box,
   ChakraProvider,
   theme,
 } from '@chakra-ui/react';
@@ -22,6 +21,9 @@ import { Withdraw } from './pages/Withdraw';
 import { OnlyUserRoute } from './routes/OnlyUserRoute';
 import { SendBalance } from './pages/SendBalance';
 import { UserSendBalance } from './pages/UserSendBalance';
+import { OnlyPrivateRoute } from './routes/OnlyPrivateRoute';
+import { StockProduct } from './pages/StockProduct';
+import { HistoryAdminFee } from './pages/HistoryAdminFee';
 
 function App() {
   return (
@@ -30,13 +32,16 @@ function App() {
       <Router>
           <Switch>
             <OnlyPublicRoute exact path={path.login} component={Login}/>
-            <OnlyUserRoute  exact path={path.root} component={Home}/>
+            <OnlyPrivateRoute  exact path={path.root} component={Home}/>
             <OnlyUserRoute  exact path={path.withdraw} component={Withdraw}/>
             <OnlyUserRoute  exact path={path.userSendbalance} component={UserSendBalance}/>
             <OnlyAdminRoute  exact path={path.admin} component={AdminWithdraw}/>
             <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
+            <OnlyAdminRoute exact path={path.stockProduct} component={StockProduct}/>
+            <OnlyAdminRoute exact path={path.transaction} component={HistoryAdminFee}/>
           </Switch>
       </Router>
+
       {/* <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />

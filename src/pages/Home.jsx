@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
-import { axiosGet } from "../API/axios";
+import { axiosGet, axiosPost } from "../API/axios";
 import { useHistory } from "react-router-dom";
 
-import { Box, Text, Flex } from "@chakra-ui/layout"
+import { Box, Text, Flex, } from "@chakra-ui/layout"
 
 import { NavigationBar } from "../components/Navbar.jsx"
 import { HomeDownline } from "../components/HomeDownline";
 import { Loading } from "../components/Loading";
-import { Button } from "@chakra-ui/react";
+import { Button,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, useDisclosure, Spinner
+} from "@chakra-ui/react";
 import { buttonResponsive, textResponsive } from "../theme/font";
+import swal from "sweetalert";
 
 
 function Home() {
     const auth = localStorage.getItem("access_token")
+    const role = localStorage.getItem("role")
 
     const history = useHistory()
 
     const baseId = localStorage.getItem("base_id")
     const userId = localStorage.getItem("id")
+
+    const { isOpen, onOpen, onClose} = useDisclosure()
+
+    const [selectBalance, setSelectBalance] = useState()
+    const [loadingSend, setLoadingSend] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
+    const [sendTotal, setSendTotal] = useState()
     
     // id: 1
     // id_generate: ""
@@ -101,6 +112,73 @@ function Home() {
             setIsLoading(false)
         }
     }
+
+    const handleClose = (e) => {
+        e.preventDefault()
+
+        onClose()
+        setErrorMessage(null)
+        setSelectBalance(undefined)
+        setSendTotal(undefined)
+    }
+
+    const postBuyBalance = async (e) => {
+        setLoadingSend(true)
+        
+        try {
+            if (!selectBalance) {
+                setErrorMessage("mohon pilih saldo yang akan dibeli")
+            } else if (!sendTotal) {
+                setErrorMessage("mohon masukkan jumlah saldo yang akan dibeli")
+            } else if (selectBalance === "sas" && userDetail.money_balance < ((+sendTotal * 85000) + 300)) {
+                setErrorMessage(`saldo keuangan anda tidak cukup untuk membeli ${sendTotal} SAS`)
+            } else if (selectBalance === "ro" && userDetail.money_balance < ((+sendTotal * 130000) + 300)) {
+                setErrorMessage(`saldo keuangan anda tidak cukup untuk membeli ${sendTotal} RO`)
+            } else {
+                if (selectBalance === "sas") {
+                    const resp = await axiosPost(auth, `/v1/transaction/buy_sas_admin`, {
+                        user_id : +userId,
+                        sas_balance : +sendTotal,
+                        money_balance: (+sendTotal * 85000) + 300
+                    })
+
+                    if (resp.status === 200) {
+                        swal({
+                            title: "Berhasil!",
+                            text: `Pembelian Saldo SAS berhasil`,
+                            icon: "success",
+                            timer: 1500,
+                            buttons: false, 
+                        }).then(function() {
+                            window.location.reload(true)
+                        })
+                    }
+                } else if (selectBalance === "ro") {
+                    const resp = await axiosPost(auth, `/v1/transaction/buy_ro_admin`, {
+                        user_id : +userId,
+                        ro_balance : +sendTotal,
+                        money_balance: (+sendTotal * 130000) + 300
+                    })
+
+                    if (resp.status === 200) {
+                        swal({
+                            title: "Berhasil!",
+                            text: `Pembelian Saldo RO berhasil`,
+                            icon: "success",
+                            timer: 1500,
+                            buttons: false, 
+                        }).then(function() {
+                            window.location.reload(true)
+                        })
+                    }
+                }
+            }
+        } catch (err) {
+            console.log(err.response)
+        } finally {
+            setLoadingSend(false)
+        }
+    }
     
     return (
         <>
@@ -134,36 +212,55 @@ function Home() {
                     >Halo, {userDetail?.fullname}</Text>
                 </Box>
 
-                <Flex
-                    justifyContent={'space-evenly'}
-                    pt={4}
-                >
-                    <Box
+
+                {
+                    role === "user" && (
+                        <Flex
+                        justifyContent={'space-evenly'}
+                        pt={4}
                     >
-                        <Button
-                            onClick={toSendBalanceUser}
-                            bg={'#AA4A30'}
-                            color={'white'}
-                            fontSize={buttonResponsive}
-                            _hover={{
-                                bg: `#c25d42`
-                            }}
-                        >Kirim Saldo</Button>        
-                    </Box>
-                    <Box
-                        pl={4}
-                    >
-                        <Button
-                            onClick={toWd}
-                            bg={'#AA4A30'}
-                            color={'white'}
-                            fontSize={buttonResponsive}
-                            _hover={{
-                                bg: `#c25d42`
-                            }}
-                        >Ajukan Penarikan</Button>        
-                    </Box>
-                </Flex>
+                        <Box
+                        >
+                            <Button
+                                onClick={toSendBalanceUser}
+                                bg={'#AA4A30'}
+                                color={'white'}
+                                fontSize={buttonResponsive}
+                                _hover={{
+                                    bg: `#c25d42`
+                                }}
+                            >Kirim Saldo</Button>        
+                        </Box>
+                        <Box
+                            pl={4}
+                        >
+                            <Button
+                                onClick={toWd}
+                                bg={'#AA4A30'}
+                                color={'white'}
+                                fontSize={buttonResponsive}
+                                _hover={{
+                                    bg: `#c25d42`
+                                }}
+                            >Ajukan Penarikan</Button>        
+                        </Box>
+                        <Box
+                            pl={4}
+                        >
+                            <Button
+                                onClick={onOpen}
+                                bg={'#AA4A30'}
+                                color={'white'}
+                                fontSize={buttonResponsive}
+                                _hover={{
+                                    bg: `#c25d42`
+                                }}
+                            >Beli Saldo</Button>        
+                        </Box>
+                    </Flex>
+                    )
+                }
+
             </Flex>
             </Box>
 
@@ -174,6 +271,144 @@ function Home() {
                 isLoading={isLoading}
             />
         </Box>
+
+
+        <Modal isOpen={isOpen} onClose={handleClose}>
+        <ModalOverlay />
+        <ModalContent
+        >
+          <ModalHeader
+            fontSize={textResponsive}
+          >Pembelian Saldo</ModalHeader>
+          <ModalCloseButton onClick={handleClose}/>
+
+          <Box
+            pl={6}
+            pr={6}
+          >
+
+            <Box>
+                {
+                    errorMessage && <Text
+                    mb={2}
+                    fontWeight={'bold'}
+                    color={'red'}
+                    fontSize={{
+                        xl : '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:"14px"
+                    }}
+                    >{errorMessage}</Text>
+                }
+            </Box>
+
+            <Box>
+            <FormLabel
+                fontSize={{
+                    xl: '18px',
+                    md: '18px',
+                    sm: '16px',
+                    base:'14px'
+                }}
+                mb={3}
+            >Pilih Saldo</FormLabel>
+
+                <Flex>
+                    <Button
+                        fontSize={buttonResponsive}
+                        borderRadius={'15px'}
+                        onClick={e => setSelectBalance("sas")}
+                        bg={selectBalance === "sas" ? "yellow.700" : "gray.200"}
+                        color={selectBalance === "sas" ? "gray.50" : "black"}
+                        _hover={{
+                            bg: selectBalance === "sas" ? "yellow.700" :  "gray.300"
+                        }}
+                    >Saldo SAS</Button>
+                    <Button
+                        ml={4}
+                        fontSize={buttonResponsive}
+                        borderRadius={'15px'}
+                        onClick={e => setSelectBalance("ro")}
+                        bg={selectBalance === "ro" ? "yellow.700" : "gray.200"}
+                        color={selectBalance === "ro" ? "gray.50" : "black"}
+                        _hover={{
+                            bg: selectBalance === "ro" ? "yellow.700" :  "gray.300"
+                        }}
+                    >Saldo RO</Button>
+                </Flex>
+            </Box>
+
+            <FormLabel
+                mt={2}
+                fontSize={{
+                    xl: '18px',
+                    md: '18px',
+                    sm: '16px',
+                    base:'14px'
+                }}
+            >Masukkan Jumlah</FormLabel>
+            <Input
+                type='text'
+                onChange={e => setSendTotal(e.target.value)}
+                value={sendTotal}
+            />
+            <Box
+                pt={4}
+                align={'center'}
+            >
+                <Button 
+                    fontSize={{
+                        xl : '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:"14px"
+                    }}
+                    bg={'yellow.400'}
+                    _hover={{
+                        bg: "yellow.500"
+                    }}
+                    fontWeight={'bold'}
+                    onClick={postBuyBalance}
+                    width={'100px'}
+                >{loadingSend ? <Spinner/> : "kirim"}</Button>
+            </Box>
+
+            <Text
+                fontSize={{
+                    xl: '14px',
+                    base:'11px'
+                }}
+                mt={2}
+            >catatan: </Text>
+            <Text
+                    fontSize={{
+                    xl: '14px',
+                    base:'10px'
+                }}                           
+            >- harga SAS berkelipatan 85.000 rupiah per saldo, untuk RO berkelipatan 130.000 rupiah per saldo</Text>
+            <Text
+                fontSize={{
+                    xl: '14px',
+                    base:'10px'
+                }}
+            >- pembelian saldo akan memotong saldo keuangan sebesar 300 rupiah untuk biaya admin</Text>
+        </Box>
+
+          <ModalFooter>
+            <Button 
+                color={'white'}
+                bg={'#AA4A30'}
+                _hover={{
+                bg: 'yellow.500',
+                }}
+                fontSize={buttonResponsive}
+                 mr={3} onClick={handleClose}>
+              Batal
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
         </>
     )
 }

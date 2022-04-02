@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, useDisclosure, Spinner, chakra, FormControl, InputGroup, InputLeftElement
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, useDisclosure, Spinner, chakra, InputGroup, InputLeftElement
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import swal from "sweetalert"
@@ -148,7 +148,7 @@ function SendBalance() {
 
         <NavigationBar/>
         
-        <Box maxW={'7xl'} margin='auto' pt={2}>
+        <Box maxW={'7xl'} margin='auto' pt={2}>    
             <Box>
                 <Box px={6} pt={1}>
                     <Text 

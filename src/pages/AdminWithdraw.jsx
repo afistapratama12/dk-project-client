@@ -39,8 +39,6 @@ function AdminWithdraw() {
         getListWdReq()
     },[])
 
-    console.log(listWdReq)
-
     const postApprove = async (e, idLoading, id, approved) => {
         e.preventDefault()
 
@@ -219,10 +217,10 @@ function AdminWithdraw() {
                         <Td w={'10%'}>{id+ 1}</Td>
                         <Td align={'left'}>{wd.fullname}</Td>
                         <Td w={{
-                                    xl: "300px",
-                                    md: "300px",
-                                    sm: "100px",
-                                    base: "100px"}}>{wd.phone_number}</Td>
+                            xl: "300px",
+                            md: "300px",
+                            sm: "100px",
+                            base: "100px"}}>{wd.phone_number}</Td>
                         <Td>{wd.bank_name}</Td>
                         <Td>{wd.bank_number}</Td>
                         <Td>{formatMoney(wd.money_balance)}</Td>

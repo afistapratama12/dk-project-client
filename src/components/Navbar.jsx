@@ -81,7 +81,7 @@ export function NavigationBar() {
             
             <Link
               as={ReactLink}
-              to={role === "admin" ? "/admin" : "/"}
+              to={"/"}
             >
               <Image
                   alt="logonav"
@@ -127,7 +127,7 @@ export function NavigationBar() {
 }
 
 const DesktopNav = ({role}) => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
+  // const linkColor = useColorModeValue('gray.600', 'gray.200');
   const linkHoverColor = useColorModeValue('gray.800', 'white');
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
@@ -329,15 +329,27 @@ const NAV_ITEMS = [
     label: 'Penarikan',
     href: '/withdraw',
   },
+  {
+    label : "Kirim Saldo",
+    href :"/user-send-balance"
+  }
 ];
 
 const NAV_ADMIN_ITEMS = [
   {
-    label: "Kirim Saldo",
-    href: "/send-balance"
+    label: "Saldo",
+    href: "/stock-product"
+  },
+  {
+    label: "Transaksi",
+    href: "/transaction"
   },
   {
     label: "Penarikan",
-    href: "/admin"
-  }
+    href: "/admin-withdraw"
+  },
+  {
+    label: "Kirim Saldo",
+    href: "/send-balance"
+  },
 ]

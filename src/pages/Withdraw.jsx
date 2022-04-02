@@ -141,6 +141,9 @@ function Withdraw() {
             if (newReqBalance.money_balance > userDetail.money_balance) {
                 setErrorMessage("Saldo keuangan tidak mencukupi")
                 flag = false
+            } else if (+newReqBalance.money_balance < 1000) {
+                setErrorMessage("Mohon masukkan saldo minimal 1000 rupiah")
+                flag = false
             } else {
                 req = {...newReqBalance, money_balance : +newReqBalance.money_balance}
             }
@@ -274,21 +277,18 @@ function Withdraw() {
                     fontWeight={'bold'}
                     fontSize={textResponsive}
                 >Penarikan Saldo</Text>
-
-                <Box
+                <Button
                     color={'white'}
                     bg={'#AA4A30'}
                     _hover={{
                         bg: 'yellow.500',
                     }}
-                    fontSize={buttonResponsive}
-                    align={'center'}
-                    p={2}
-                    borderRadius={'15px'}
                     onClick={backHome}
+                    fontSize={buttonResponsive}
+                    borderRadius={'15px'}
                 >
-                    <Text>Kembali</Text>
-                </Box>
+                    Kembali
+                </Button>
                 </Flex>
             </Box>
 
@@ -432,6 +432,12 @@ function Withdraw() {
                                     >
                                         { errorMessage && <Text
                                             mb={2}
+                                            fontSize={{
+                                                xl : '16px'
+,                                                md : "15px",
+                                                sm: "13px",
+                                                base : "13px"
+                                            }}
                                         >{errorMessage}</Text>}
                                     </Box>
                                     <FormLabel
@@ -470,6 +476,12 @@ function Withdraw() {
                                     >
                                         { errorMessage && <Text
                                             mb={2}
+                                            fontSize={{
+                                                xl : '16px'
+,                                                md : "15px",
+                                                sm: "13px",
+                                                base : "13px"
+                                            }}
                                         >{errorMessage}</Text>}
                                     </Box>
                                     <FormLabel
@@ -505,7 +517,19 @@ function Withdraw() {
                                     base:'12px'
                                 }}
                                 mt={2}
-                            >catatan: penarikan akan diakumulasikan dalam satu minggu</Text>
+                            >catatan: </Text>
+                            <Text
+                                fontSize={{
+                                    xl: '14px',
+                                    base:'11px'
+                                }}
+                            >- setiap pengajuan penarikan akan dipotong biaya admin sebesar 300 rupiah</Text>
+                            <Text
+                                 fontSize={{
+                                    xl: '14px',
+                                    base:'11px'
+                                }}                           
+                            >- penarikan akan diakumulasikan dalam satu minggu</Text>
                         </Box>
                     </Collapse>
                 </Box>

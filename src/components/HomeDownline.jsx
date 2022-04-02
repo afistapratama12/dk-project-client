@@ -40,7 +40,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
         onClose()
     }
 
-    const postCrateUser = async (e) => {
+    const postCreateUser = async (e) => {
         e.preventDefault()
 
         if (registerData.fullname === "") {
@@ -84,9 +84,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
             }
         }
     } 
-
-    console.log(registerData)
-
+    
     return (
         <>
         <Box
@@ -190,7 +188,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                 <Button 
                     width={'120px'}
                     fontWeight={'bold'}
-                    onClick={postCrateUser}
+                    onClick={postCreateUser}
                     disabled={loadingCreate ? true : false}
                 >{loadingCreate ? <Spinner/> : "Daftarkan"}</Button>
             </Box>

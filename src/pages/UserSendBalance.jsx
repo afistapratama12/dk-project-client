@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, useDisclosure, Spinner, chakra, FormControl, InputGroup, InputLeftElement
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, useDisclosure, Spinner, chakra, InputGroup, InputLeftElement
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import swal from "sweetalert"
@@ -79,6 +79,8 @@ function UserSendBalance() {
 
         if (!sendTotal) {
             setErrorMessage("mohon isi saldo terlebih dahulu")
+        } else if (+sendTotal < 1000) {
+            setErrorMessage("mohon masukkan saldo minimal 1000 rupiah")
         } else {
             setLoadingSend(true)
             try {
@@ -181,7 +183,7 @@ function UserSendBalance() {
                             fontSize={textResponsive}
                         >Pilih Saldo</Text>
 
-                        <Box
+                        {/* <Box
                             color={'white'}
                             bg={'#AA4A30'}
                             _hover={{
@@ -192,9 +194,27 @@ function UserSendBalance() {
                             p={2}
                             borderRadius={'15px'}
                             onClick={backHome}
+                            cursor={'pointer'}
                         >
-                            <Text>Kembali</Text>
-                        </Box>
+                            <Text
+                                cursor={'pointer'}
+                            >Kembali</Text>
+                        </Box> */}
+
+                        <Button
+                            borderRadius={'15px'}
+                            color={'white'}
+                            bg={'#AA4A30'}
+                            _hover={{
+                              bg: 'yellow.500',
+                            }}
+                            p={2}
+                            w={'80px'}
+                            fontSize={buttonResponsive}
+                            onClick={backHome}
+                        >
+                            Kembali
+                        </Button>
                     </Flex>
                 </Box>
                 <Box
@@ -437,8 +457,27 @@ function UserSendBalance() {
                     width={'100px'}
                 >{loadingSend ? <Spinner/> : "kirim"}</Button>
             </Box>
+
+            {
+                selectSend.money &&  (
+            <Box mt={2}>
+                <Text
+                    fontSize={{
+                        xl : '14px',
+                        md: "14px",
+                        sm: "11px",
+                        base: "11px"
+                    }}
+                
+                >Catatan : setiap transaksi keuangan akan dipotong biaya admin sebesar 300 rupiah</Text>
+            </Box>
+                )
+            }
+
+            
           </Box>
           <ModalFooter>
+
             <Button 
                 color={'white'}
                 bg={'#AA4A30'}

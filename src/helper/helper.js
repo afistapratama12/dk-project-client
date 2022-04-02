@@ -27,6 +27,7 @@ export const positionInd = (position) => {
   }
 }
 
+
 export const getTotalMoney = (allData) => {
   let money = 0
 
@@ -61,4 +62,34 @@ export const handleShowSend = (selectSend) => {
   }
 
   return ""
+}
+
+// params cat, inOrOut = "in" | "out"
+export const getTotalBalanceInOut = (allData, cat, inOrOut) => {
+  let total = 0
+  
+  if (cat === "ro") {
+    allData.forEach(d => {
+      if (inOrOut === "out" && d.to_id !== 1) {
+        total += d.ro_balance
+      }
+
+      if (inOrOut === "in" && d.to_id === 1) {
+        total += d.ro_balance
+      }
+    })
+
+  } else if (cat === "sas") {
+    allData.forEach(d => {
+      if (inOrOut === "out" && d.to_id !== 1) {
+        total += d.sas_balance
+      }
+
+      if (inOrOut === "in" && d.to_id === 1) {
+        total += d.sas_balance
+      }
+    })
+  }
+
+  return total
 }
