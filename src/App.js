@@ -24,6 +24,7 @@ import { UserSendBalance } from './pages/UserSendBalance';
 import { OnlyPrivateRoute } from './routes/OnlyPrivateRoute';
 import { StockProduct } from './pages/StockProduct';
 import { HistoryAdminFee } from './pages/HistoryAdminFee';
+import { NotFound } from './pages/NotFound';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
             <OnlyAdminRoute exact path={path.stockProduct} component={StockProduct}/>
             <OnlyAdminRoute exact path={path.transaction} component={HistoryAdminFee}/>
+            <OnlyAdminRoute exact path={path.any} component={NotFound}/>
           </Switch>
       </Router>
 
