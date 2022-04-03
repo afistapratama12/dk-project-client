@@ -171,16 +171,31 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                 )
             }
 
-            <FormLabel>Nama Lengkap</FormLabel>
+            <FormLabel>Nama Lengkap *</FormLabel>
             <Input
                 onChange={e => setRegisterData({ ...registerData, fullname: e.target.value})}
                 value={registerData.fullname}
+                placeholder={"misal: budi setiawan"}
             />
+           
             <FormLabel>No Telepon / WA</FormLabel>
             <Input
                 onChange={e => setRegisterData({ ...registerData, phone_number: e.target.value})}
                 value={registerData.phone_number}
+                placeholder={'misal: 082123123123'}
             />
+             <Box
+                my={1}
+            >
+                <Text
+                    fontSize={{
+                        xl: "14px",
+                        md: "14px",
+                        sm: "12px",
+                        base: "12px"
+                    }}
+                >*) Pastikan nama yang dimasukkan adalah nama lengkap, dan <strong>tidak menggunakan</strong> panggilan seperti "bang", "adek", "lek", "om", dll</Text>
+            </Box>
             <Box
                 pt={4}
                 align={'center'}
