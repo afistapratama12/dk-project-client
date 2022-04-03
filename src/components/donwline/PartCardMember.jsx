@@ -1,6 +1,6 @@
 import { 
     Box, Button, useDisclosure,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Flex
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Flex, Text
 } from "@chakra-ui/react"
 import { useState } from "react"
 import swal from "sweetalert"
@@ -182,6 +182,31 @@ function PartCardMember({isLoading, toId}) {
                         onClick={postTransaction}
                     >Kirim</Button>
                 </Box>
+
+                {
+                    openModal.money && (
+                        <Box mt={2}>
+                        <Text
+                            fontSize={{
+                                xl : '14px',
+                                md: "14px",
+                                sm: "11px",
+                                base: "11px"
+                            }}
+                        
+                        >Catatan : setiap transaksi keuangan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text>
+                        <Text
+                            fontSize={{
+                                xl : '14px',
+                                md: "14px",
+                                sm: "11px",
+                                base: "11px"
+                            }}
+                        
+                        >Contoh : anda mengirim 20.000 ke member lain, maka member lain dapat 19.700</Text>
+                    </Box>
+                    )
+                }
 
             </Box>
             <ModalFooter>
