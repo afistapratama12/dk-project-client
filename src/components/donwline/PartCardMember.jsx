@@ -7,10 +7,10 @@ import swal from "sweetalert"
 import { axiosPost } from "../../API/axios"
 import { buttonResponsive } from "../../theme/font"
 
-const userId = localStorage.getItem("id")
-const auth = localStorage.getItem("access_token")
-
 function PartCardMember({isLoading, toId}) {
+    const userId = localStorage.getItem("id")
+    const auth = localStorage.getItem("access_token")
+
     const { isOpen, onOpen, onClose} = useDisclosure()
 
     const [openModal, setOpenModal] = useState({
@@ -51,14 +51,20 @@ function PartCardMember({isLoading, toId}) {
 
             if (openModal.money) {
                 postData["money_balance"] = +sendData.money_balance
+                postData["category"] = "umum"
+                postData["description"] = userId === "1" ? "kirim saldo keuangan ke member" : "kirim saldo keuangan ke member lain"
             }
     
             if (openModal.SAS) {
                 postData["sas_balance"] = +sendData.sas_balance
+                postData["category"] = "umum"
+                postData["description"] = userId === "1" ? "kirim saldo SAS ke member" : "kirim saldo SAS ke member lain"
             }
     
             if (openModal.RO) {
                 postData["ro_balance"] = +sendData.ro_balance
+                postData["category"] = "umum"
+                postData["description"] = userId === "1" ? "kirim saldo RO ke member" : "kirim saldo RO ke member lain"
             }
     
             const resp = await axiosPost(auth, `/v1/transaction/record`, postData) 

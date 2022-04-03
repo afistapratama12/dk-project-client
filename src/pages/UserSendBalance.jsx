@@ -88,14 +88,20 @@ function UserSendBalance() {
     
                 if (selectSend.money) {
                     postData["money_balance"] = +sendTotal
+                    postData["description"] = "kirim saldo keuangan ke member lain"
+                    postData["category"] = "umum"
                 }
         
                 if (selectSend.sas) {
                     postData["sas_balance"] = +sendTotal
+                    postData["description"] = "kirim saldo SAS ke member lain"
+                    postData["category"] = "umum"
                 }
         
                 if (selectSend.ro) {
                     postData["ro_balance"] = +sendTotal
+                    postData["description"] = "kirim saldo RO ke member lain"
+                    postData["category"] = "umum"
                 }
         
                 const resp = await axiosPost(auth, `/v1/transaction/record`, postData) 
