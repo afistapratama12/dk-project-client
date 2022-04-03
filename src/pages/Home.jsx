@@ -366,6 +366,7 @@ function Home() {
                 type='text'
                 onChange={e => setSendTotal(e.target.value)}
                 value={sendTotal}
+                placeholder={'misal: 2'}
             />
             <Box
                 pt={4}
@@ -398,15 +399,24 @@ function Home() {
             <Text
                     fontSize={{
                     xl: '14px',
+                    sm:'10px',
                     base:'10px'
                 }}                           
             >- harga SAS berkelipatan 85.000 rupiah per saldo, untuk RO berkelipatan 130.000 rupiah per saldo</Text>
             <Text
                 fontSize={{
                     xl: '14px',
+                    sm:'10px',
                     base:'10px'
                 }}
             >- pembelian saldo akan memotong saldo keuangan sebesar 300 rupiah untuk biaya admin</Text>
+            <Text
+                fontSize={{
+                    xl: '14px',
+                    sm:'10px',
+                    base:'10px'
+                }}
+            >contoh: membeli 1 SAS, maka akan mengurangi saldo keuangan sebesar 85.300</Text>
         </Box>
 
           <ModalFooter>

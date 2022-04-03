@@ -371,6 +371,7 @@ function StockProduct() {
                 type='text'
                 onChange={e => setAddBalance({...addbalance, sas_balance: e.target.value})}
                 value={addbalance.sas_balance}
+                placeholder={'misal: 2'}
             />
 
             <FormLabel
@@ -385,6 +386,7 @@ function StockProduct() {
                 type='text'
                 onChange={e => setAddBalance({...addbalance, ro_balance: e.target.value})}
                 value={addbalance.ro_balance}
+                placeholder={'misal: 2'}
             />
             <Box
                 pt={4}

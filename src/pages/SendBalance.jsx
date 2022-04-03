@@ -183,6 +183,10 @@ function SendBalance() {
 
     const handleClose = (e) => {
         e.preventDefault()
+        if (loadingSend) {
+            return
+        }
+
         onClose()
 
         setErrorMessage(null)
@@ -298,7 +302,6 @@ function SendBalance() {
                                 onChange={e =>  setFilterName(e.target.value)}
                                 value={filterName}
                                 onKeyUp={handleFilterData}
-                                
                             />
 
                         </InputGroup>
@@ -441,6 +444,7 @@ function SendBalance() {
                     type='text'
                     onChange={e => setSendTotal(e.target.value)}
                     value={sendTotal}
+                    placeholder={selectSend.money? "misal: 1000" : "misal: 2"}
                 />
                 </>
             ) : (

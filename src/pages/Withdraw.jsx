@@ -449,7 +449,8 @@ function Withdraw() {
                                         bg={'gray.50'}
                                         type={'text'}
                                         value={newReqBalance.money_balance ?? ""}
-                                        onChange={e => setNewReqBalance({ user_id: +userDetail.id , bank_acc_id: +bankInfo.id, money_balance: e.target.value})}    
+                                        onChange={e => setNewReqBalance({ user_id: +userDetail.id , bank_acc_id: +bankInfo.id, money_balance: e.target.value})}   
+                                        placeholder={'misal: 1000'} 
                                     />
 
                                     <Button
@@ -493,6 +494,7 @@ function Withdraw() {
                                         type={'text'}
                                         value={newReqBalance.ro_balance ?? ""}
                                         onChange={e => setNewReqBalance({ user_id: +userDetail.id , bank_acc_id: +bankInfo.id, ro_balance: e.target.value})}
+                                        placeholder={'misal: 2'}
                                     />
                                     <Button
                                         mt={3}
@@ -523,7 +525,7 @@ function Withdraw() {
                                     xl: '14px',
                                     base:'11px'
                                 }}
-                            >- setiap pengajuan penarikan akan dipotong biaya admin sebesar 300 rupiah</Text>
+                            >- setiap pengajuan penarikan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text>
                             <Text
                                  fontSize={{
                                     xl: '14px',
@@ -593,16 +595,19 @@ function Withdraw() {
                     <Input
                         onChange={e => setNewBankData({...newBankData, bank_name : e.target.value, user_id : +userDetail.id})}
                         value={newBankData.bank_name}
+                        placeholder={'misal: BCA'}
                     />
                     <FormLabel>Nomer Rekening</FormLabel>
                     <Input
                         onChange={e => setNewBankData({...newBankData, bank_number : e.target.value,  user_id : +userDetail.id})}
                         value={newBankData.bank_number}
+                        placeholder={'misal: 123123123'}
                     />
                     <FormLabel>Atas Nama ( Pastikan sesuai )</FormLabel>
                     <Input
                         onChange={e => setNewBankData({...newBankData, name_on_bank : e.target.value, user_id : +userDetail.id})}
                         value={newBankData.name_on_bank}
+                        placeholder={'misal: budi setiawan'}
                     />
 
                     <Box

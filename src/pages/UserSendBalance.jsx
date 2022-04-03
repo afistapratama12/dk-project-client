@@ -159,6 +159,10 @@ function UserSendBalance() {
 
     const handleClose = () => {
         // e.preventDefault()
+        if (loadingSend) {
+            return
+        }
+
         onClose()
 
         setErrorMessage(null)
@@ -188,24 +192,6 @@ function UserSendBalance() {
                             fontWeight={'bold'}
                             fontSize={textResponsive}
                         >Pilih Saldo</Text>
-
-                        {/* <Box
-                            color={'white'}
-                            bg={'#AA4A30'}
-                            _hover={{
-                              bg: 'yellow.500',
-                            }}
-                            fontSize={buttonResponsive}
-                            align={'center'}
-                            p={2}
-                            borderRadius={'15px'}
-                            onClick={backHome}
-                            cursor={'pointer'}
-                        >
-                            <Text
-                                cursor={'pointer'}
-                            >Kembali</Text>
-                        </Box> */}
 
                         <Button
                             borderRadius={'15px'}
@@ -442,6 +428,7 @@ function UserSendBalance() {
                 type='text'
                 onChange={e => setSendTotal(e.target.value)}
                 value={sendTotal}
+                placeholder={selectSend.money? "misal: 1000" : "misal: 2"}
             />
             <Box
                 pt={4}

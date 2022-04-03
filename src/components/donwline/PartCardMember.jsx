@@ -25,6 +25,9 @@ function PartCardMember({isLoading, toId}) {
 
     const handleSendData = (e, balanceName) => {
         e.preventDefault()
+        if (loadingSend) {
+            return
+        }
 
         if (balanceName === 'sas_balance') { 
             setSendData({
@@ -101,6 +104,9 @@ function PartCardMember({isLoading, toId}) {
 
     const handleClose = (e) => {
         e.preventDefault()
+        if (loadingSend) {
+            return
+        }
 
         onClose()
         setErrorMessage(null)
@@ -185,6 +191,7 @@ function PartCardMember({isLoading, toId}) {
                             type='number'
                             onChange={e => handleSendData(e, "money_balance")}
                             value={sendData?.money_balance}
+                            placeholder={'misal: 1000'}
                         />
                         </>
                 )}
@@ -195,6 +202,7 @@ function PartCardMember({isLoading, toId}) {
                             type='number'
                             onChange={e => handleSendData(e, "sas_balance")}
                             value={sendData?.sas_balance}
+                            placeholder={'misal: 2'}
                         />
                         </>
                 )}
@@ -205,6 +213,7 @@ function PartCardMember({isLoading, toId}) {
                             type='number'
                             onChange={e => handleSendData(e, "ro_balance")}
                             value={sendData?.ro_balance}
+                            placeholder={'misal: 2'}
                         />
                         </>
                 )}
@@ -245,7 +254,7 @@ function PartCardMember({isLoading, toId}) {
 
             </Box>
             <ModalFooter>
-                <Button colorScheme='pink' mr={3} onClick={onClose}>
+                <Button colorScheme='pink' mr={3} onClick={handleClose}>
                 Batal
                 </Button>
             </ModalFooter>
