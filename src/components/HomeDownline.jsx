@@ -102,7 +102,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                 fontSize={fontDlResp}
                 // bg={'#ffa07a'}
             >
-                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data?.fullname.split(" ")[0]}</Text>
+                <Text fontWeight={'bold'} isTruncated={true}>{statusCard === 'empty' ? "..." : data?.fullname}</Text>
                 <Text fontWeight={'bold'}>{data?.role === "admin" ? "Tengah" : positionInd(position)}</Text>
             </Box>
 
