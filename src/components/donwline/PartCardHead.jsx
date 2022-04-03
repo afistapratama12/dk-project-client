@@ -2,10 +2,10 @@ import {
     Box, Button, Flex, Text, useDisclosure,
     Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter
 } from "@chakra-ui/react"
-import { formatMoney } from "../../helper/helper"
-import { buttonResponsive, fontDlResp, textResponsive } from "../../theme/font"
+import { formatBigMoney, formatMoney } from "../../helper/helper"
+import { buttonResponsive, fontDlResp } from "../../theme/font"
 
-function PartCardHead({ data, isLoading }) {
+function PartCardHead({ data }) {
     const { isOpen, onOpen, onClose} = useDisclosure()
     
     const handleShowUser = (e) => {
@@ -31,7 +31,7 @@ function PartCardHead({ data, isLoading }) {
                         justifyContent={'space-between'}
                     >
                         <Text>Uang</Text>
-                        <Text>{formatMoney(data?.money_balance)}</Text>
+                        <Text>{formatBigMoney(data?.money_balance)}</Text>
                     </Flex>
                     <Flex
                         justifyContent={'space-between'}
