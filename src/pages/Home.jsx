@@ -80,11 +80,10 @@ function Home() {
         setIsLoading(true)
 
         try {
-            const resp1 = await axiosGet(auth, `/v1/users/self`)
-            setUserDetail(resp1.data)
-
+            const resp = await axiosGet(auth, `v1/users/self`)
+            setUserDetail(resp.data)
+            
             const respdl = await axiosGet(auth, `/v1/users/downline/${localStorage.getItem("base_id")}`)
-
 
             if (respdl) {
                 for (let i = 0 ; i < respdl.data.length; i++) {
@@ -129,16 +128,16 @@ function Home() {
                 setErrorMessage("mohon pilih saldo yang akan dibeli")
             } else if (!sendTotal) {
                 setErrorMessage("mohon masukkan jumlah saldo yang akan dibeli")
-            } else if (selectBalance === "sas" && userDetail.money_balance < ((+sendTotal * 85000) + 300)) {
+            } else if (selectBalance === "sas" && userDetail.money_balance < (+sendTotal * 85000)) {
                 setErrorMessage(`saldo keuangan anda tidak cukup untuk membeli ${sendTotal} SAS`)
-            } else if (selectBalance === "ro" && userDetail.money_balance < ((+sendTotal * 130000) + 300)) {
+            } else if (selectBalance === "ro" && userDetail.money_balance < (+sendTotal * 130000)) {
                 setErrorMessage(`saldo keuangan anda tidak cukup untuk membeli ${sendTotal} RO`)
             } else {
                 if (selectBalance === "sas") {
                     const resp = await axiosPost(auth, `/v1/transaction/buy_sas_admin`, {
                         user_id : +userId,
                         sas_balance : +sendTotal,
-                        money_balance: (+sendTotal * 85000) + 300
+                        money_balance: (+sendTotal * 85000)
                     })
 
                     if (resp.status === 200) {
@@ -156,7 +155,7 @@ function Home() {
                     const resp = await axiosPost(auth, `/v1/transaction/buy_ro_admin`, {
                         user_id : +userId,
                         ro_balance : +sendTotal,
-                        money_balance: (+sendTotal * 130000) + 300
+                        money_balance: (+sendTotal * 130000)
                     })
 
                     if (resp.status === 200) {
@@ -278,6 +277,7 @@ function Home() {
             </Box>
 
             <HomeDownline 
+                userSelf={userDetail}
                 userDetail={baseId === userId ? userDetail : userShow} 
                 downline={{left: dlLeft, center: dlCenter, right: dlRight}}
                 showMore={{left: showLeft, center: showCenter, right: showRight}}
@@ -395,28 +395,35 @@ function Home() {
                     base:'11px'
                 }}
                 mt={2}
-            >catatan: </Text>
-            <Text
-                    fontSize={{
-                    xl: '14px',
-                    sm:'10px',
-                    base:'10px'
-                }}                           
-            >- harga SAS berkelipatan 85.000 rupiah per saldo, untuk RO berkelipatan 130.000 rupiah per saldo</Text>
-            <Text
+            ><strong>catatan: </strong>harga SAS berkelipatan Rp 85.000 per saldo, untuk RO berkelipatan Rp 130.000 per saldo</Text>
+            {/* <Text
                 fontSize={{
                     xl: '14px',
                     sm:'10px',
                     base:'10px'
                 }}
-            >- pembelian saldo akan memotong saldo keuangan sebesar 300 rupiah untuk biaya admin</Text>
+            >- pembelian saldo akan memotong saldo keuangan sebesar 300 rupiah untuk biaya admin</Text> */}
             <Text
                 fontSize={{
                     xl: '14px',
-                    sm:'10px',
-                    base:'10px'
+                    sm:'11px',
+                    base:'11px'
                 }}
-            >contoh: membeli 1 SAS, maka akan mengurangi saldo keuangan sebesar 85.300</Text>
+            ><strong>contoh:</strong></Text>
+            <Text
+                fontSize={{
+                    xl: '14px',
+                    sm:'11px',
+                    base:'11px'
+                }}
+            >- membeli 1 SAS, maka akan mengurangi saldo keuangan sebesar Rp 85.000</Text>
+            <Text
+                fontSize={{
+                    xl: '14px',
+                    sm:'11px',
+                    base:'11px'
+                }}
+            >- membeli 2 RO, maka akan mengurangi saldo keuangan sebesar Rp 260.000</Text>
         </Box>
 
           <ModalFooter>

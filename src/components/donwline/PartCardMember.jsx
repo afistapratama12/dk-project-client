@@ -7,7 +7,7 @@ import swal from "sweetalert"
 import { axiosPost } from "../../API/axios"
 import { buttonResponsive } from "../../theme/font"
 
-function PartCardMember({isLoading, toId}) {
+function PartCardMember({userDetail, isLoading, toId}) {
     const userId = localStorage.getItem("id")
     const auth = localStorage.getItem("access_token")
 
@@ -61,8 +61,13 @@ function PartCardMember({isLoading, toId}) {
                     setLoadingSend(false)
 
                     return
+                } else if ((+sendData.money_balance + 300) > userDetail?.money_balance ) {
+                    setErrorMessage("Saldo tidak cukup, pastikan ada saldo untuk penarikan biaya admin")
+                    setLoadingSend(false)
+
+                    return
                 } else {
-                    postData["money_balance"] = +sendData.money_balance
+                    postData["money_balance"] = (+sendData.money_balance + 300)
                     postData["category"] = "umum"
                     postData["description"] = userId === "1" ? "kirim saldo keuangan ke member" : "kirim saldo keuangan ke member lain"
                 }
@@ -97,6 +102,13 @@ function PartCardMember({isLoading, toId}) {
             
         } catch (err) {
             console.log(err.response)
+            if (err?.response?.status === 500) {
+                const errBalance = ["SASBalance", "ROBalance", "MoneyBalance"]
+                const check = errBalance.some(el => err.response.data.message.includes(el))
+                if (check) {
+                    setErrorMessage("Saldo tidak cukup, pastikan ada saldo untuk penarikan biaya admin")
+                }
+            }
         } finally {
             setLoadingSend(false)
         }
@@ -224,6 +236,7 @@ function PartCardMember({isLoading, toId}) {
                     <Button 
                         fontWeight={'bold'}
                         onClick={postTransaction}
+                        width={'90px'}
                     >{loadingSend ? <Spinner/> : "Kirim"}</Button>
                 </Box>
 
@@ -247,7 +260,7 @@ function PartCardMember({isLoading, toId}) {
                                 base: "11px"
                             }}
                         
-                        >Contoh : anda mengirim 20.000 ke member lain, maka member lain dapat 19.700</Text>
+                        >Contoh : mengirim saldo keuangan Rp 2.000, maka akan mengurangi saldo Rp 2.300 </Text>
                     </Box>
                     )
                 }

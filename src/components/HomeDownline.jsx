@@ -13,7 +13,7 @@ import { buttonResponsive, fontDlResp } from "../theme/font";
 const CFaPlusCircle = chakra(FaPlusCircle);
 
 // statusCard = 'head' | 'empty' | 'member'
-export function Card({ data, statusCard, position, parentId, loading }) {
+export function Card({ data, statusCard, position, parentId, loading, userDetail }) {
     const auth = localStorage.getItem("access_token")
 
     const { isOpen, onOpen, onClose} = useDisclosure()
@@ -141,7 +141,7 @@ export function Card({ data, statusCard, position, parentId, loading }) {
                 </Box>)
             }
 
-            { statusCard === 'member' && (<PartCardMember isLoading={loading} toId={data.id}/>)}
+            { statusCard === 'member' && (<PartCardMember isLoading={loading} toId={data.id} userDetail={userDetail}/>)}
         </Box>
 
 
@@ -225,6 +225,7 @@ function HomeDownline(props) {
     const baseId = localStorage.getItem("base_id")
     const userId = localStorage.getItem("id")
 
+    const userSelf = props.userSelf
     const user = props.userDetail
     const downline = props.downline // { left: obj, center: obj, right: obj}
     const showMore = props.showMore
@@ -303,7 +304,7 @@ function HomeDownline(props) {
                 </Box>
 
                 <Flex justifyContent={'center'}>
-                    <Card data={user} position={user?.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading}/>
+                    <Card data={user} position={user?.position} statusCard={baseId !== userId ? 'member' : 'head'} loading={isLoading} userDetail={userSelf}/>
                 </Flex>
                
                 <Flex
@@ -311,7 +312,7 @@ function HomeDownline(props) {
                     justifyContent={'space-around'}
                 >
                     <Box>
-                        <Card data={downline?.left} position={"left"} statusCard={downline.left === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
+                        <Card data={downline?.left} position={"left"} statusCard={downline.left === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading} userDetail={userSelf}/>
                         <Box
                             mt={4}    
                         >
@@ -324,7 +325,7 @@ function HomeDownline(props) {
                         </Box>
                     </Box>
                     <Box>
-                        <Card data={downline?.center} position={'center'} statusCard={downline.center === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
+                        <Card data={downline?.center} position={'center'} statusCard={downline.center === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading} userDetail={userSelf}/>
                         <Box
                             mt={4}    
                         >
@@ -337,7 +338,7 @@ function HomeDownline(props) {
                         </Box>
                     </Box>
                     <Box>
-                        <Card data={downline?.right} position={'right'} statusCard={downline?.right === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading}/>
+                        <Card data={downline?.right} position={'right'} statusCard={downline?.right === null ? 'empty' : 'member'} parentId={user?.id} loading={isLoading} userDetail={userSelf}/>
                         <Box
                             mt={4}    
                         >

@@ -16,7 +16,7 @@ import { textResponsive, buttonResponsive } from "../theme/font.jsx"
 
 const CFaSearch = chakra(FaSearch);
 
-function UserSendBalance() {
+function UserSendBalance({userDetail, loadingUDetail}) {
     const auth = localStorage.getItem("access_token")
     const userId = localStorage.getItem("id")
 
@@ -81,13 +81,15 @@ function UserSendBalance() {
             setErrorMessage("mohon isi saldo terlebih dahulu")
         } else if (selectSend.money && +sendTotal < 1000) {
             setErrorMessage("mohon masukkan saldo minimal 1000 rupiah")
+        } else if(selectSend.money && (+sendTotal + 300) > userDetail?.money_balance) {
+            setErrorMessage("Saldo tidak cukup, pastikan ada saldo untuk penarikan biaya admin")
         } else {
             setLoadingSend(true)
             try {
                 const postData = {from_id: +userId, to_id: +usertoSend}
     
                 if (selectSend.money) {
-                    postData["money_balance"] = +sendTotal
+                    postData["money_balance"] = (+sendTotal + 300)
                     postData["description"] = "kirim saldo keuangan ke member lain"
                     postData["category"] = "umum"
                 }
@@ -123,9 +125,7 @@ function UserSendBalance() {
                     const errBalance = ["SASBalance", "ROBalance", "MoneyBalance"]
                     const check = errBalance.some(el => err.response.data.message.includes(el))
                     if (check) {
-                        console.log("masuk sini")
-
-                        setErrorMessage("Saldo tidak cukup")
+                        setErrorMessage("Saldo tidak cukup, pastikan ada saldo untuk penarikan biaya admin")
                     }
                 }
             } finally {
@@ -178,7 +178,7 @@ function UserSendBalance() {
 
     return (
         <>
-        { loading && <Loading/>}
+        { (loading || loadingUDetail) && <Loading/>}
 
         <NavigationBar/>
         
@@ -462,7 +462,16 @@ function UserSendBalance() {
                         base: "11px"
                     }}
                 
-                >Catatan : setiap transaksi keuangan akan dipotong biaya admin sebesar 300 rupiah</Text>
+                >Catatan : setiap transaksi keuangan akan dipotong biaya admin sebesar 300 rupiah dari saldo, pastikan saldo mencukupi.</Text>
+                <Text
+                    fontSize={{
+                        xl : '14px',
+                        md: "14px",
+                        sm: "11px",
+                        base: "11px"
+                    }}
+                
+                >contoh : mengirim saldo keuangan Rp 2.000, maka akan mengurangi saldo Rp 2.300 </Text>
             </Box>
                 )
             }

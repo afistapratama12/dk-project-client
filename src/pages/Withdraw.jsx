@@ -519,19 +519,19 @@ function Withdraw() {
                                     base:'12px'
                                 }}
                                 mt={2}
-                            >catatan: </Text>
-                            <Text
+                            >catatan: penarikan akan diakumulasikan dalam satu minggu</Text>
+                            {/* <Text
                                 fontSize={{
                                     xl: '14px',
                                     base:'11px'
                                 }}
-                            >- setiap pengajuan penarikan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text>
-                            <Text
+                            >- setiap pengajuan penarikan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text> */}
+                            {/* <Text
                                  fontSize={{
                                     xl: '14px',
                                     base:'11px'
                                 }}                           
-                            >- penarikan akan diakumulasikan dalam satu minggu</Text>
+                            >- penarikan akan diakumulasikan dalam satu minggu</Text> */}
                         </Box>
                     </Collapse>
                 </Box>

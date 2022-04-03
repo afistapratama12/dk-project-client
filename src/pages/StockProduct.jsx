@@ -53,11 +53,6 @@ function StockProduct() {
         }
     }
 
-    console.log(addbalance)
-
-    console.log(ROtransactions)
-    console.log(SAStransactions)
-
     useEffect(() => {
         getAdminData()
     },[])
