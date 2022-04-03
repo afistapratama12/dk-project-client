@@ -1,6 +1,6 @@
 import { 
     Box, Button, useDisclosure,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Flex, Text
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Input, FormLabel, Flex, Text, Spinner
 } from "@chakra-ui/react"
 import { useState } from "react"
 import swal from "sweetalert"
@@ -20,6 +20,8 @@ function PartCardMember({isLoading, toId}) {
     })
 
     const [sendData, setSendData] = useState(null)
+    const [errorMessage, setErrorMessage] = useState(null)
+    const [loadingSend, setLoadingSend] = useState(false)
 
     const handleSendData = (e, balanceName) => {
         e.preventDefault()
@@ -45,16 +47,23 @@ function PartCardMember({isLoading, toId}) {
 
     const postTransaction = async (e) => {
         e.preventDefault()
+        setLoadingSend(true)
 
         try {
             const postData = {from_id: +userId, to_id: +toId}
 
             if (openModal.money) {
-                postData["money_balance"] = +sendData.money_balance
-                postData["category"] = "umum"
-                postData["description"] = userId === "1" ? "kirim saldo keuangan ke member" : "kirim saldo keuangan ke member lain"
+                if (+sendData.money_balance < 1000) {
+                    setErrorMessage("mohon masukkan saldo minimal 1000 rupiah")
+                    setLoadingSend(false)
+
+                    return
+                } else {
+                    postData["money_balance"] = +sendData.money_balance
+                    postData["category"] = "umum"
+                    postData["description"] = userId === "1" ? "kirim saldo keuangan ke member" : "kirim saldo keuangan ke member lain"
+                }
             }
-    
             if (openModal.SAS) {
                 postData["sas_balance"] = +sendData.sas_balance
                 postData["category"] = "umum"
@@ -85,7 +94,17 @@ function PartCardMember({isLoading, toId}) {
             
         } catch (err) {
             console.log(err.response)
+        } finally {
+            setLoadingSend(false)
         }
+    }
+
+    const handleClose = (e) => {
+        e.preventDefault()
+
+        onClose()
+        setErrorMessage(null)
+
     }
 
  return(
@@ -131,17 +150,33 @@ function PartCardMember({isLoading, toId}) {
             </Flex>
         </Box>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
             <ModalOverlay />
             <ModalContent
             >
             <ModalHeader>Kirim Saldo</ModalHeader>
-            <ModalCloseButton />
+            <ModalCloseButton onClick={handleClose}/>
 
             <Box
                 pl={6}
                 pr={6}
             >
+
+            <Box>
+                {
+                    errorMessage && <Text
+                    mb={2}
+                    fontWeight={'bold'}
+                    color={'red'}
+                    fontSize={{
+                        xl : '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:"14px"
+                    }}
+                    >{errorMessage}</Text>
+                }
+            </Box>
 
                 { openModal.money && (
                         <>
@@ -180,7 +215,7 @@ function PartCardMember({isLoading, toId}) {
                     <Button 
                         fontWeight={'bold'}
                         onClick={postTransaction}
-                    >Kirim</Button>
+                    >{loadingSend ? <Spinner/> : "Kirim"}</Button>
                 </Box>
 
                 {

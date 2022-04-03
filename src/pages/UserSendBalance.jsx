@@ -79,7 +79,7 @@ function UserSendBalance() {
 
         if (!sendTotal) {
             setErrorMessage("mohon isi saldo terlebih dahulu")
-        } else if (+sendTotal < 1000) {
+        } else if (selectSend.money && +sendTotal < 1000) {
             setErrorMessage("mohon masukkan saldo minimal 1000 rupiah")
         } else {
             setLoadingSend(true)
