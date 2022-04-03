@@ -372,7 +372,7 @@ function SendBalance() {
             </TableProps>
 
             {
-                filterData.length === 0 && (
+                filterData?.length === 0 && (
                     <Box
                         top="calc(50% - (58px / 2))" 
                         right="calc(50% - (150px / 2))"
