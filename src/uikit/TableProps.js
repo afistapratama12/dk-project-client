@@ -20,8 +20,9 @@ export const Thead = ({ children, ...rest }) => {
     <Box 
       p={4} 
       textAlign="left" 
-      width={'100%'}
+      width={'100vw'}
       tableLayout='fixed'
+      // display={'inline'}
       {...{ as: "thead" }} 
       {...rest}>
       {children}
@@ -58,6 +59,7 @@ export const Th= ({ children, ...rest }) => {
       p={2}
       borderBottom="1px"
       borderBottomColor="gray.200"
+      width={'100vw'}
       fontSize={{
         base:"11px",
         sm: "12px",

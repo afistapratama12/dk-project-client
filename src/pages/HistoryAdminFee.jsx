@@ -15,6 +15,7 @@ function HistoryAdminFee() {
   const auth = localStorage.getItem('access_token');
 
   const [loading, setLoading] = useState();
+  const [isNullData, setIsNullData] = useState(false)
 
   const [feeTrans, setFeeTrans] = useState();
   const [filter, setFilter] = useState('month');
@@ -24,13 +25,20 @@ function HistoryAdminFee() {
 
     try {
       const resp = await axiosGet(auth, `/v1/transaction/admin_fee`);
+
+      if (resp.data === null) {
+        setIsNullData(true)
+        setFeeTrans([]);
+      }
       setFeeTrans(resp.data);
     } catch (err) {
       console.log(err.response);
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  console.log(feeTrans)
 
   useEffect(() => {
     getFeeTrans();
@@ -60,7 +68,7 @@ function HistoryAdminFee() {
             <Flex py={1} justifyContent={'space-between'}>
               <Text>Bulan ini :</Text>
               <Text>
-                {feeTrans &&
+                {isNullData ? 0 : feeTrans &&
                   formatMoney(
                     getTotalMoney(
                       feeTrans?.filter(
@@ -72,7 +80,7 @@ function HistoryAdminFee() {
             </Flex>
             <Flex pb={1} justifyContent={'space-between'}>
               <Text>Total :</Text>
-              <Text>{feeTrans && formatMoney(getTotalMoney(feeTrans))}</Text>
+              <Text>{isNullData ? 0 : feeTrans && formatMoney(getTotalMoney(feeTrans))}</Text>
             </Flex>
           </Box>
         </Box>
@@ -145,7 +153,21 @@ function HistoryAdminFee() {
                   ))}
             </Tbody>
           </TableProps>
-
+            {
+              isNullData && (
+                <Box
+                top="calc(50% - (58px / 2))" 
+                right="calc(50% - (100px / 2))"
+                position="fixed"
+                display={'block'}
+                >
+                <Text
+                    fontWeight={'bold'}
+                    fontSize={textResponsive}
+                >Data Kosong</Text>
+                </Box>
+              )
+            }
         </Box>
       </Box>
     </>

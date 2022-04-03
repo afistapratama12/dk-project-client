@@ -3,7 +3,7 @@ import { Box, Button, Flex, Text,
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import swal from "sweetalert"
-import { axiosGet, axiosPost } from "../API/axios.js"
+import { axiosGet, axiosPost, axiosPut } from "../API/axios.js"
 import { Loading } from "../components/Loading.jsx"
 import { NavigationBar } from "../components/Navbar.jsx"
 import { handleShowSend } from "../helper/helper.js"
@@ -39,6 +39,10 @@ function SendBalance() {
 
     const [allUser, setAllUser] = useState()
 
+    const [isSendModal, setIsSendModal] = useState(true)
+    const [userEdit, setUserEdit] = useState()
+    const [userEditId, setUserEditId] = useState()
+
     const getAllUser = async () => {
         setLoading(true)
 
@@ -66,6 +70,42 @@ function SendBalance() {
         } else {
             setUserToSend(id)
             onOpen()    
+        }
+    }
+
+    const handleEdit = (e, user) => {
+        setIsSendModal(false)
+
+        setUserEditId(user.id)
+        setUserEdit({fullname : user.fullname, phone_number : user.phone_number})
+
+        onOpen()
+    }
+
+    const postUserEdit = async (e) => {
+        e.preventDefault()
+
+        setLoadingSend(true)
+        try {
+
+            const resp = await axiosPut(auth, `v1/users/${userEditId}`, userEdit)
+
+            if (resp.status === 200) {
+                onClose()
+                swal({
+                    title: "Berhasil!",
+                    text: `Berhasil melakukan perubahan data user`,
+                    icon: "success",
+                    timer: 1500,
+                    buttons: false,
+                }).then(function() {
+                    window.location.reload(true)
+                })
+            }
+        } catch (err) {
+            setErrorMessage("Terjadi kesalahan pada sistem, mohon hubungi admin")
+        } finally {
+            setLoadingSend(false)
         }
     }
 
@@ -284,7 +324,7 @@ function SendBalance() {
                             <Th width={'15%'}>No</Th>
                             <Th width={'40%'}>Nama Lengkap</Th>
                             <Th pl={-1}>No Telp</Th>
-                            <Th></Th>
+                            <Th align={'center'}>Action</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -294,39 +334,59 @@ function SendBalance() {
                                     <Td>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
                                     <Td pl={-1}>{user.phone_number}</Td>
-                                    <Td>
+                                    <Td align={'center'} whiteSpace={'nowrap'}>
                                         <Button
+                                            p={3}
+                                            mr={2}
+                                            fontSize={buttonResponsive}
+                                            onClick={e => handleEdit(e, user)}
+                                        >Edit</Button>
+                                        <Button
+                                            p={3}
                                             fontSize={buttonResponsive}
                                             onClick={e => handleChoose(e, user.id)}
                                         >Pilih</Button>
                                     </Td>
                                 </Tr>
-                            )) : filterData.length !== 0 ? filterData?.map((user, id) => (
+                            )) : filterData?.map((user, id) => (
                                 <Tr key={id}>
                                     <Td >{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
                                     <Td pl={-1}>{user.phone_number}</Td>
-                                    <Td>
+                                    <Td align={'center'} whiteSpace={'nowrap'}>
                                         <Button
+                                            p={3}
+                                            mr={2}
+                                            fontSize={buttonResponsive}
+                                            onClick={e => handleEdit(e, user)}
+                                        >Edit</Button>
+                                        <Button
+                                            p={3}
                                             fontSize={buttonResponsive}
                                             onClick={e => handleChoose(e, user.id)}
                                         >Pilih</Button>
                                     </Td>
                                 </Tr>
-                            )) : <Box
-                                    align={'center'}
-                                    pt={'13vh'}
-                                    width={'90vw'}
-                                    height={'30vh'}
-                                >
-                                <Text
-                                    fontWeight={'bold'}
-                                    fontSize={textResponsive}
-                                >Data tidak ditemukan</Text>
-                                </Box>
-                        }
+                            ))}
                     </Tbody>
             </TableProps>
+
+            {
+                filterData.length === 0 && (
+                    <Box
+                        top="calc(50% - (58px / 2))" 
+                        right="calc(50% - (150px / 2))"
+                        position="fixed"
+                        display={'block'}
+                    >
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={textResponsive}
+                    >Data tidak ditemukan</Text>
+                    </Box>
+                )
+            }
+
             </Box>
         </Box>    
 
@@ -337,8 +397,8 @@ function SendBalance() {
         >
           <ModalHeader
             fontSize={textResponsive}
-          >Kirim Saldo</ModalHeader>
-          <ModalCloseButton />
+          >{isSendModal ? "Kirim Saldo" : "Edit User"}</ModalHeader>
+          <ModalCloseButton onClick={handleClose}/>
 
           <Box
             pl={6}
@@ -361,19 +421,55 @@ function SendBalance() {
                 }
             </Box>
 
-            <FormLabel
-                fontSize={{
-                    xl: '18px',
-                    md: '18px',
-                    sm: '16px',
-                    base:'14px'
-                }}
-            >Kirim Saldo {handleShowSend(selectSend)}</FormLabel>
-            <Input
-                type='text'
-                onChange={e => setSendTotal(e.target.value)}
-                value={sendTotal}
-            />
+            { isSendModal ? (
+                <>
+                <FormLabel
+                    fontSize={{
+                        xl: '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:'14px'
+                    }}
+                >Kirim Saldo {handleShowSend(selectSend)}</FormLabel>
+                <Input
+                    type='text'
+                    onChange={e => setSendTotal(e.target.value)}
+                    value={sendTotal}
+                />
+                </>
+            ) : (
+                <>
+                <FormLabel
+                    fontSize={{
+                        xl: '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:'14px'
+                    }}
+                >Nama Lengkap</FormLabel>
+                <Input
+                    type='text'
+                    onChange={e => setUserEdit({...userEdit, fullname : e.target.value})}
+                    value={userEdit.fullname}
+                />
+                <FormLabel
+                    fontSize={{
+                        xl: '18px',
+                        md: '18px',
+                        sm: '16px',
+                        base:'14px'
+                    }}
+                >No Telepon / WA</FormLabel>
+                <Input
+                    type='text'
+                    onChange={e => setUserEdit({...userEdit, phone_number : e.target.value})}
+                    value={userEdit.phone_number}
+                />
+                </> 
+            )
+        
+        }
+
             <Box
                 pt={4}
                 align={'center'}
@@ -390,7 +486,7 @@ function SendBalance() {
                         bg: "yellow.500"
                     }}
                     fontWeight={'bold'}
-                    onClick={postTransaction}
+                    onClick={isSendModal ? postTransaction : postUserEdit}
                     width={'100px'}
                 >{loadingSend ? <Spinner/> : "kirim"}</Button>
             </Box>
