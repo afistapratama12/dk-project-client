@@ -95,19 +95,19 @@ function PartCardHead({ data }) {
                 justifyContent={'space-between'}
             >
                 <Text>Saldo Keuangan :</Text>
-                <Text>{data?.money_balance}</Text>
+                <Text>{formatMoney(data?.money_balance)}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Saldo SAS :</Text>
-                <Text>{data?.sas_balance}</Text>
+                <Text>{formatMoney(data?.sas_balance)}</Text>
             </Flex>
             <Flex
                 justifyContent={'space-between'}
             >
                 <Text>Saldo Repeat Order :</Text>
-                <Text>{data?.ro_balance}</Text>
+                <Text>{formatMoney(data?.ro_balance)}</Text>
             </Flex>
 
           </Box>

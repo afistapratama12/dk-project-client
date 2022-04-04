@@ -200,7 +200,7 @@ function Withdraw() {
                    const resp =  await axiosPut(auth, `/v1/bank_account/${bankInfo.id}`, newBankData)
 
                    console.log(resp)
-                   if (resp.status === 200 && resp.statusText === "OK") {
+                   if (resp.status === 200) {
                         onClose()
                         setErrorMessage(null)
 
@@ -444,7 +444,7 @@ function Withdraw() {
                                         fontWeight={'bold'}
                                         fontSize={textResponsive}
                                     >
-                                    Masukkan Saldo Keuangan</FormLabel>
+                                    Masukkan Saldo Keuangan *</FormLabel>
                                     <Input 
                                         bg={'gray.50'}
                                         type={'text'}
@@ -520,18 +520,12 @@ function Withdraw() {
                                 }}
                                 mt={2}
                             >catatan: penarikan akan diakumulasikan dalam satu minggu</Text>
-                            {/* <Text
+                            { openedWd === "money" && <Text
                                 fontSize={{
                                     xl: '14px',
                                     base:'11px'
                                 }}
-                            >- setiap pengajuan penarikan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text> */}
-                            {/* <Text
-                                 fontSize={{
-                                    xl: '14px',
-                                    base:'11px'
-                                }}                           
-                            >- penarikan akan diakumulasikan dalam satu minggu</Text> */}
+                            >* khusus setiap penarikan keuangan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text>}
                         </Box>
                     </Collapse>
                 </Box>
