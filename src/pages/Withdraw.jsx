@@ -409,7 +409,7 @@ function Withdraw() {
                                     base: "12px",
                                     sm: "14px"
                                 }}
-                            >Penarikan Repeat Order</Button>
+                            >Claim Repeat Order</Button>
                         </Box>
                     </Flex>
 
