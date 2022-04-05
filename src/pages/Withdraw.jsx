@@ -26,7 +26,7 @@ export function TableWithdraw({ wdReqHistory }) {
                     <Tr>
                         <Th width={'10%'} pl={-1}>No</Th>
                         <Th width={'20%'}>Penarikan Uang</Th>
-                        <Th width={'20%'}>Penarikan RO</Th>
+                        <Th width={'20%'}>Claim RO</Th>
                         <Th>Bonus RO dan Jaringan</Th>
                         <Th align={'center'}>Status</Th>
                     </Tr>
