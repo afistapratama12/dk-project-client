@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// https://dk-sas-api.onrender.com
 export const Axios = axios.create({
-    baseURL: "http://localhost:8080"
+    baseURL: "https://dk-sas-api.onrender.com"
 })
 
 export const axiosGet = (auth, url) => {
