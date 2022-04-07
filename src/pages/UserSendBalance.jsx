@@ -346,7 +346,24 @@ function UserSendBalance({userDetail, loadingUDetail}) {
                                 <Tr key={id}>
                                     <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td whiteSpace={'nowrap'}>{user.username}</Td>
+                                    <Td whiteSpace={'nowrap'}>{user.id === 1 ? (
+                                        <Button
+                                            fontSize={buttonResponsive}
+                                            borderRadius={'15px'}
+                                            align={'center'}
+                                            bg='red.300'
+                                            _hover={{
+                                                bg:'red.300'
+                                            }}
+                                            _active={{
+                                                bg:'red.300'
+                                            }}
+                                            cursor={'default'}
+                                            h={'9vw'}
+                                        >
+                                            ADMIN
+                                        </Button>
+                                    ) : user.username}</Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}
@@ -358,7 +375,24 @@ function UserSendBalance({userDetail, loadingUDetail}) {
                                 <Tr key={id}>
                                     <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td whiteSpace={'nowrap'}>{user.username}</Td>
+                                    <Td whiteSpace={'nowrap'}>{user.id === 1 ? (
+                                        <Button
+                                            fontSize={buttonResponsive}
+                                            borderRadius={'15px'}
+                                            align={'center'}
+                                            bg='red.300'
+                                            cursor={'default'}
+                                            _hover={{
+                                                bg:'red.300'
+                                            }}
+                                            _active={{
+                                                bg:'red.300'
+                                            }}
+                                            h={'9vw'}
+                                        >
+                                            ADMIN
+                                        </Button>
+                                    ) : user.username}</Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}

@@ -24,7 +24,7 @@ function HistoryAdminFee() {
     setLoading(true);
 
     try {
-      const resp = await axiosGet(auth, `/v1/transaction/admin_fee`);
+      const resp = await axiosGet(auth, `/v1/transaction/admin/transaction`);
 
       if (resp.data === null) {
         setIsNullData(true)
@@ -72,7 +72,7 @@ function HistoryAdminFee() {
                   formatMoney(
                     getTotalMoney(
                       feeTrans?.filter(
-                        t => moment(t.created_at).month() === moment().month()
+                        t => moment(t.created_at).month() === moment().month() && t.category === "admin_fee"
                       )
                     )
                   )}
@@ -80,7 +80,7 @@ function HistoryAdminFee() {
             </Flex>
             <Flex pb={1} justifyContent={'space-between'}>
               <Text>Total :</Text>
-              <Text>{isNullData ? 0 : feeTrans && formatMoney(getTotalMoney(feeTrans))}</Text>
+              <Text>{isNullData ? 0 : feeTrans && formatMoney(getTotalMoney(feeTrans?.filter(t => t.category === "admin_fee")))}</Text>
             </Flex>
           </Box>
         </Box>
@@ -132,7 +132,7 @@ function HistoryAdminFee() {
             <Tbody>
               {filter === 'month'
                 ? feeTrans
-                    ?.filter(t => moment(t.created_at).month === moment().month)
+                    ?.filter(t => moment(t.created_at).month === moment().month && t.to_id === 1 && t.money_balance !== 0 && t.from_id !== 1) 
                     .map((t, id) => (
                       <Tr key={id}>
                         <Td>{id + 1}</Td>
@@ -142,7 +142,7 @@ function HistoryAdminFee() {
                         <Td>{formatMoney(t.money_balance)}</Td>
                       </Tr>
                     ))
-                : feeTrans?.map((t, id) => (
+                : feeTrans?.filter(t => t.to_id === 1 && t.money_balance !== 0 && t.from_id !== 1).map((t, id) => (
                     <Tr key={id}>
                       <Td>{id + 1}</Td>
                       <Td>{t.created_at}</Td>
