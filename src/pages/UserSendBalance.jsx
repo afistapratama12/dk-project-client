@@ -335,7 +335,7 @@ function UserSendBalance({userDetail, loadingUDetail}) {
                         <Tr>
                             <Th width={'15%'} pl={-1}>No</Th>
                             <Th width={'40%'} pl={-1}>Nama Lengkap</Th>
-                            <Th width={'20%'}>Username</Th>
+                            <Th width={'20%'} align="center">Status</Th>
                             <Th pl={-1}></Th>
                             <Th></Th>
                         </Tr>
@@ -346,24 +346,28 @@ function UserSendBalance({userDetail, loadingUDetail}) {
                                 <Tr key={id}>
                                     <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td whiteSpace={'nowrap'}>{user.id === 1 ? (
+                                    <Td whiteSpace={'nowrap'} >
                                         <Button
                                             fontSize={buttonResponsive}
                                             borderRadius={'15px'}
                                             align={'center'}
-                                            bg='red.300'
+                                            bg={user.id === 1 ? 'red.300' : "green.300"}
                                             _hover={{
-                                                bg:'red.300'
+                                                bg: user.id === 1 ? 'red.300' : "green.300"
                                             }}
                                             _active={{
-                                                bg:'red.300'
+                                                bg:user.id === 1 ? 'red.300' : "green.300"
                                             }}
                                             cursor={'default'}
-                                            h={'9vw'}
+                                            h={{
+                                                xl: '50px',
+                                                sm: '9vw',
+                                                base: '9vw'
+                                            }}
                                         >
-                                            ADMIN
+                                            {user.id === 1 ? "ADMIN" : "USER"}
                                         </Button>
-                                    ) : user.username}</Td>
+                                    </Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}
@@ -375,24 +379,28 @@ function UserSendBalance({userDetail, loadingUDetail}) {
                                 <Tr key={id}>
                                     <Td pl={-1}>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
-                                    <Td whiteSpace={'nowrap'}>{user.id === 1 ? (
+                                    <Td whiteSpace={'nowrap'} align={'center'}>
                                         <Button
                                             fontSize={buttonResponsive}
                                             borderRadius={'15px'}
                                             align={'center'}
-                                            bg='red.300'
-                                            cursor={'default'}
+                                            bg={user.id === 1 ? 'red.300' : "green.300"}
                                             _hover={{
-                                                bg:'red.300'
+                                                bg:user.id === 1 ? 'red.300' : "green.300"
                                             }}
                                             _active={{
-                                                bg:'red.300'
+                                                bg:user.id === 1 ? 'red.300' : "green.300"
                                             }}
-                                            h={'9vw'}
+                                            cursor={'default'}
+                                            h={{
+                                                xl: '50px',
+                                                sm: '9vw',
+                                                base: '9vw'
+                                            }}
                                         >
-                                            ADMIN
+                                            {user.id === 1 ? "ADMIN" : "USER"}
                                         </Button>
-                                    ) : user.username}</Td>
+                                    </Td>
                                     <Td>
                                         <Button
                                             fontSize={buttonResponsive}
