@@ -7,8 +7,11 @@ import { NavigationBar } from "../components/Navbar.jsx"
 import { formatMoney, getTotalMoney, getTotalRO } from "../helper/helper.js"
 import { TableProps, Tbody, Td, Th, Thead, Tr } from "../uikit/TableProps.js"
 
+import { buttonResponsive } from "../theme/font.jsx"
+
 function AdminWithdraw() {    
     const auth = localStorage.getItem("access_token")
+    const day = new Date().getDay()
 
     const [loading, setLoading] = useState(false)
     const [loadingSend, setLoadingSend] = useState(false)
@@ -139,9 +142,13 @@ function AdminWithdraw() {
                 </Box>
             </Flex>
 
+            <Box mt={2}  >
+                <Text fontSize={buttonResponsive}>Note: Admin hanya dapat melakukan penerimaan atau pembatalan pada hari <strong>Minggu</strong></Text>
+            </Box>
+
             <Box
                 overflow={'auto'}
-                mt={4}
+                mt={2}
             >
 
             <Box
@@ -208,6 +215,7 @@ function AdminWithdraw() {
                                 }}
                                 onClick={e => postApprove(e,id, wd.id, wd.approved)}
                                 color="white"
+                                disabled={day !== 0 ? true: false}
                             >{ loadingSend && idToLoading === id ? <Spinner/> :
                             wd.approved ? "Batal" : "Terima"}</Button>
                         </Td>
@@ -246,6 +254,7 @@ function AdminWithdraw() {
                                 }}
                                 onClick={e => postApprove(e,id, wd.id, wd.approved)}
                                 color="white"
+                                disabled={day !== 0 ? true: false}
                             >{ loadingSend && idToLoading === id ? <Spinner/> :
                             wd.approved ? "Batal" : "Terima"}</Button>
                         </Td>

@@ -61,6 +61,8 @@ export function TableWithdraw({ wdReqHistory }) {
 
 function Withdraw() {
     const auth = localStorage.getItem("access_token")
+    const day = new Date().getDay()
+
     const history = useHistory()
 
     const { isOpen, onOpen, onClose} = useDisclosure()
@@ -385,6 +387,7 @@ function Withdraw() {
                                     base: "12px",
                                     sm: "14px",
                                 }}
+                                disabled={day === 0 ? true : false}
                             >Penarikan Saldo Uang</Button>
                         </Box>
 
@@ -409,6 +412,7 @@ function Withdraw() {
                                     base: "12px",
                                     sm: "14px"
                                 }}
+                                disabled={day === 0 ? true : false}
                             >Claim Repeat Order</Button>
                         </Box>
                     </Flex>
@@ -528,6 +532,10 @@ function Withdraw() {
                             >* khusus setiap penarikan keuangan akan otomatis dipotong biaya admin sebesar 300 rupiah</Text>}
                         </Box>
                     </Collapse>
+                </Box>
+
+                <Box mb={2}>
+                    <Text fontSize={buttonResponsive}>Note: Penarikan akan dimatikan pada hari <strong>Minggu</strong></Text>
                 </Box>
 
                 <TableWithdraw wdReqHistory={wdReqHistory}/>
