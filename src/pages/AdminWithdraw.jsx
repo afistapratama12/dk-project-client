@@ -200,8 +200,8 @@ function AdminWithdraw() {
                                 fontSize={{
                                     xl: "18px",
                                     md: "16px",
-                                    sm: "16px",
-                                    base: "14px"
+                                    sm: "14px",
+                                    base: "12px"
                                 }}
                                 width={{
                                     xl: 20,
@@ -209,15 +209,15 @@ function AdminWithdraw() {
                                     sm: 14,
                                     base: 14
                                 }}
-                                bg={wd.approved ? "red.500" : "blue.400"}
+                                bg={wd.approved ? "gray.500" : "blue.400"}
                                 _hover={{
-                                    bg: wd.approved ? "red.300" : "blue.300"
+                                    bg: wd.approved ? "gray.500" : "blue.300"
                                 }}
                                 onClick={e => postApprove(e,id, wd.id, wd.approved)}
                                 color="white"
-                                disabled={day !== 0 ? true: false}
+                                disabled={wd.approved || day !== 0 ? true: false}
                             >{ loadingSend && idToLoading === id ? <Spinner/> :
-                            wd.approved ? "Batal" : "Terima"}</Button>
+                            wd.approved ? "diterima" : "Terima"}</Button>
                         </Td>
                     </Tr>
                     )) : listWdWeek?.map((wd, id) => (
@@ -239,8 +239,8 @@ function AdminWithdraw() {
                                 fontSize={{
                                     xl: "18px",
                                     md: "16px",
-                                    sm: "16px",
-                                    base: "14px"
+                                    sm: "14px",
+                                    base: "12px"
                                 }}
                                 width={{
                                     xl: 20,
@@ -248,15 +248,15 @@ function AdminWithdraw() {
                                     sm: 14,
                                     base: 14
                                 }}
-                                bg={wd.approved ? "red.500" : "blue.400"}
+                                bg={wd.approved ? "gray.500" : "blue.400"}
                                 _hover={{
-                                    bg: wd.approved ? "red.300" : "blue.300"
+                                    bg: wd.approved ? "gray.500" : "blue.300"
                                 }}
                                 onClick={e => postApprove(e,id, wd.id, wd.approved)}
                                 color="white"
-                                disabled={day !== 0 ? true: false}
+                                disabled={wd.approved || day !== 0 ? true: false}
                             >{ loadingSend && idToLoading === id ? <Spinner/> :
-                            wd.approved ? "Batal" : "Terima"}</Button>
+                            wd.approved ? "Diterima" : "Terima"}</Button>
                         </Td>
                     </Tr>
                     ))}
