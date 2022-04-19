@@ -14,7 +14,7 @@ import { textResponsive, buttonResponsive } from "../theme/font.jsx"
 
 const CFaSearch = chakra(FaSearch);
 
-function SendBalance() {
+function SendBalance({userDetail, loadingUDetail}) {
     const auth = localStorage.getItem("access_token")
 
     const { isOpen, onOpen, onClose} = useDisclosure()
@@ -126,15 +126,27 @@ function SendBalance() {
                 }
         
                 if (selectSend.sas) {
-                    postData["sas_balance"] = +sendTotal
-                    postData["description"] = "kirim saldo SAS ke member"
-                    postData["category"] = "sas_balance"
+                    if (userDetail.sas_balance < +sendTotal) {
+                        setErrorMessage("saldo sas tidak cukup, mohon isi ulang")
+                        setLoadingSend(false)
+                        return
+                    } else {
+                        postData["sas_balance"] = +sendTotal
+                        postData["description"] = "kirim saldo SAS ke member"
+                        postData["category"] = "sas_balance"
+                    }
                 }
         
                 if (selectSend.ro) {
-                    postData["ro_balance"] = +sendTotal
-                    postData["description"] = "kirim saldo RO ke member"
-                    postData["category"] = "ro_balance"
+                    if (userDetail.ro_balance < +sendTotal) {
+                        setErrorMessage("saldo ro tidak cukup, mohon isi ulang")
+                        setLoadingSend(false)
+                        return
+                    } else {
+                        postData["ro_balance"] = +sendTotal
+                        postData["description"] = "kirim saldo RO ke member"
+                        postData["category"] = "ro_balance"
+                    }
                 }
         
                 const resp = await axiosPost(auth, `/v1/transaction/record`, postData) 
@@ -194,7 +206,7 @@ function SendBalance() {
 
     return (
         <>
-        { loading && <Loading/>}
+        { (loadingUDetail || loading) && <Loading/>}
 
         <NavigationBar/>
         
@@ -332,6 +344,7 @@ function SendBalance() {
                         <Tr>
                             <Th width={'15%'}>No</Th>
                             <Th width={'40%'}>Nama Lengkap</Th>
+                            <Th>Username</Th>
                             <Th pl={-1}>No Telp</Th>
                             <Th align={'center'}>Action</Th>
                         </Tr>
@@ -342,6 +355,7 @@ function SendBalance() {
                                 <Tr key={id}>
                                     <Td>{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
+                                    <Td pl={-1}>{user.username}</Td>
                                     <Td pl={-1}>{user.phone_number}</Td>
                                     <Td align={'center'} whiteSpace={'nowrap'}>
                                         <Button
@@ -361,6 +375,7 @@ function SendBalance() {
                                 <Tr key={id}>
                                     <Td >{id+1}</Td>
                                     <Td pl={-1}>{user.fullname}</Td>
+                                    <Td pl={-1}>{user.username}</Td>
                                     <Td pl={-1}>{user.phone_number}</Td>
                                     <Td align={'center'} whiteSpace={'nowrap'}>
                                         <Button

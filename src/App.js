@@ -69,7 +69,9 @@ function App() {
               <UserSendBalance userDetail={userDetail} loadingUDetail={loading}/>  
             </OnlyUserRoute>
             <OnlyAdminRoute  exact path={path.admin} component={AdminWithdraw}/>
-            <OnlyAdminRoute  exact path={path.sendBalance} component={SendBalance}/>
+            <OnlyAdminRoute  exact path={path.sendBalance}>
+              <SendBalance userDetail={userDetail} loadingUDetail={loading}/>  
+            </OnlyAdminRoute>
             <OnlyAdminRoute exact path={path.stockProduct} component={StockProduct}/>
             <OnlyAdminRoute exact path={path.transaction} component={HistoryAdminFee}/>
             <OnlyAdminRoute exact path={path.any} component={NotFound}/>
