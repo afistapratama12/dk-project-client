@@ -47,7 +47,7 @@ export function Card({ data, statusCard, position, parentId, loading, userDetail
             setErrorMessage("mohon isi nama lengkap")
         } else if (registerData.phone_number === "") {
             setErrorMessage("mohon masukkan nomer HP / WA")
-        } else if (registerData.phone_number.length < 11 || registerData.phone_number.slice(0,2) !== "08") {
+        } else if (registerData.phone_number.length < 9 || registerData.phone_number.slice(0,2) !== "08") {
             setErrorMessage("mohon masukan nomer yang benar")
         } else {
 
